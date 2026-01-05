@@ -103,6 +103,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               <h1 className="font-display text-display-md font-medium tracking-tight text-foreground md:text-display-lg">
                 {project.title}
               </h1>
+              {project.subtitle && (
+                <p className="mt-4 text-body-lg text-foreground-subtle">
+                  {project.subtitle}
+                </p>
+              )}
               <p className="mt-6 text-body-xl leading-relaxed text-foreground-muted">
                 {project.longDescription || project.description}
               </p>
