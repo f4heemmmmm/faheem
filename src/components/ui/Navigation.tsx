@@ -1,13 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-
-const navLinks = [
-  { name: "about", href: "#about" },
-  { name: "experience", href: "#experience" },
-  { name: "projects", href: "#projects" },
-  { name: "skills", href: "#skills" },
-];
+import { NAV_LINKS, CONTACT_EMAIL } from "@/lib/constants";
 
 export default function Navigation() {
   const [isVisible, setIsVisible] = useState(true);
@@ -57,7 +51,7 @@ export default function Navigation() {
 
           {/* Desktop navigation */}
           <ul className="hidden items-center gap-10 md:flex">
-            {navLinks.map((link) => (
+            {NAV_LINKS.map((link) => (
               <li key={link.name}>
                 <a
                   href={link.href}
@@ -69,7 +63,7 @@ export default function Navigation() {
             ))}
             <li>
               <a
-                href="mailto:hello@faheem.dev"
+                href={`mailto:${CONTACT_EMAIL}`}
                 className="rounded-none border border-foreground bg-foreground px-5 py-2.5 text-body-sm font-medium text-background transition-all duration-300 hover:bg-transparent hover:text-foreground"
               >
                 contact
@@ -115,7 +109,7 @@ export default function Navigation() {
       >
         <div className="container-luxury py-8">
           <ul className="space-y-6">
-            {navLinks.map((link) => (
+            {NAV_LINKS.map((link) => (
               <li key={link.name}>
                 <a
                   href={link.href}
@@ -128,7 +122,7 @@ export default function Navigation() {
             ))}
             <li className="pt-4">
               <a
-                href="mailto:hello@faheem.dev"
+                href={`mailto:${CONTACT_EMAIL}`}
                 className="inline-block rounded-none border border-foreground bg-foreground px-6 py-3 text-body-sm font-medium text-background transition-all duration-300 hover:bg-transparent hover:text-foreground"
                 onClick={() => setIsMobileMenuOpen(false)}
               >

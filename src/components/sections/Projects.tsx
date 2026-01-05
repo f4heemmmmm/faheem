@@ -1,67 +1,37 @@
-"use client";
-
 import { Github, ExternalLink, ArrowRight } from "lucide-react";
-
-interface Project {
-  title: string;
-  description: string;
-  technologies: string[];
-  githubUrl?: string;
-  liveUrl?: string;
-  featured?: boolean;
-}
-
-const projects: Project[] = [
-  {
-    title: "rallyrank",
-    description:
-      "tennis matchmaking and tournament management system built with agile methodologies, featuring automatic matchmaking using a custom elo ranking algorithm for fair competition.",
-    technologies: ["react", "spring boot", "mongodb", "tailwind css", "axios"],
-    liveUrl: "https://rally-rank-frontend.web.app/",
-    featured: true,
-  },
-  {
-    title: "hundrednow",
-    description:
-      "an original card game developed in java, implementing custom game mechanics, logic, and ui elements for an engaging player experience.",
-    technologies: ["java", "oop", "game logic"],
-    featured: true,
-  },
-  {
-    title: "knightsbridge house",
-    description:
-      "official website for knightsbridge house, an educational institute. designed with modern ui/ux principles for seamless navigation and intuitive user experience.",
-    technologies: ["responsive design", "ui/ux", "web development"],
-    liveUrl: "https://knightsbridge-house.vercel.app/",
-  },
-  {
-    title: "faheem's portfolio",
-    description:
-      "fully responsive portfolio website built from scratch, featuring engaging sections for skills, experiences, and projects with interactive animations.",
-    technologies: ["react", "next.js", "tailwind css", "framer motion"],
-    liveUrl: "https://www.faheemkamel.com/",
-  },
-];
+import { projects } from "@/data/projects";
 
 export default function Projects() {
   return (
-    <section id="projects" className="flex min-h-screen snap-start items-center section-spacing">
-      <div className="w-full px-6 md:px-12 lg:px-20">
+    <section
+      id="projects"
+      aria-labelledby="projects-heading"
+      className="flex min-h-screen snap-start items-center section-spacing"
+    >
+      <div className="container-luxury">
         {/* Section header */}
-        <div className="mb-16 md:mb-24">
-          <p className="mb-4 text-base tracking-widest text-foreground-subtle">
+        <div className="mb-12 md:mb-16">
+          <p className="mb-4 text-caption tracking-widest text-foreground-subtle">
             projects
           </p>
-          <h2 className="text-4xl font-light tracking-tight text-foreground md:text-5xl">
+          <h2
+            id="projects-heading"
+            className="font-display text-display-sm font-medium tracking-tight text-foreground md:text-display-md"
+          >
             selected work
           </h2>
         </div>
 
         {/* Projects grid */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
+        <div
+          className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8"
+          role="list"
+          aria-label="Featured projects"
+        >
           {projects.map((project, index) => (
             <article
-              key={index}
+              key={project.title}
+              role="listitem"
               className="group relative flex min-h-[400px] flex-col border border-border bg-background-subtle p-10 transition-all duration-400 ease-luxury hover:border-foreground-subtle/30 hover:bg-background-elevated lg:p-14"
             >
               {/* Featured badge */}
@@ -74,42 +44,49 @@ export default function Projects() {
               )}
 
               {/* Project number */}
-              <span className="mb-8 text-sm text-foreground-subtle/40">
+              <span
+                className="mb-8 text-caption text-foreground-subtle/40"
+                aria-hidden="true"
+              >
                 {String(index + 1).padStart(2, "0")}
               </span>
 
               {/* Title */}
-              <h3 className="mb-4 text-2xl font-medium text-foreground md:text-3xl">
+              <h3 className="mb-4 font-display text-display-sm font-medium text-foreground">
                 {project.title}
               </h3>
 
               {/* Description */}
-              <p className="mb-8 flex-grow text-lg leading-relaxed text-foreground-subtle md:text-xl">
+              <p className="mb-8 flex-grow text-body-md text-foreground-muted md:text-body-lg">
                 {project.description}
               </p>
 
               {/* Technologies */}
-              <div className="mb-10 flex flex-wrap gap-3">
-                {project.technologies.map((tech, techIndex) => (
-                  <span
-                    key={techIndex}
-                    className="border border-border px-4 py-2 text-sm text-foreground-muted"
+              <ul
+                className="mb-10 flex flex-wrap gap-2"
+                aria-label={`Technologies used in ${project.title}`}
+              >
+                {project.technologies.map((tech) => (
+                  <li
+                    key={tech}
+                    className="border border-border px-3 py-1.5 text-caption text-foreground-muted"
                   >
                     {tech}
-                  </span>
+                  </li>
                 ))}
-              </div>
+              </ul>
 
               {/* Links */}
-              <div className="flex items-center gap-8">
+              <div className="flex items-center gap-6">
                 {project.githubUrl && (
                   <a
                     href={project.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-base text-foreground-muted transition-colors duration-300 hover:text-foreground"
+                    className="inline-flex items-center gap-2 text-body-sm text-foreground-muted transition-colors duration-300 hover:text-foreground"
+                    aria-label={`View ${project.title} source code on GitHub`}
                   >
-                    <Github className="h-5 w-5" />
+                    <Github className="h-4 w-4" aria-hidden="true" />
                     <span className="link-underline">code</span>
                   </a>
                 )}
@@ -118,9 +95,10 @@ export default function Projects() {
                     href={project.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-base text-foreground-muted transition-colors duration-300 hover:text-foreground"
+                    className="inline-flex items-center gap-2 text-body-sm text-foreground-muted transition-colors duration-300 hover:text-foreground"
+                    aria-label={`View ${project.title} live demo`}
                   >
-                    <ExternalLink className="h-5 w-5" />
+                    <ExternalLink className="h-4 w-4" aria-hidden="true" />
                     <span className="link-underline">live demo</span>
                   </a>
                 )}
@@ -130,15 +108,16 @@ export default function Projects() {
         </div>
 
         {/* View all link */}
-        <div className="mt-20 text-center">
+        <div className="mt-16 text-center">
           <a
             href="https://github.com/faheem"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 text-lg text-foreground-muted transition-colors duration-300 hover:text-foreground"
+            className="inline-flex items-center gap-2 text-body-md text-foreground-muted transition-colors duration-300 hover:text-foreground"
+            aria-label="View all projects on GitHub"
           >
             <span className="link-underline">view all projects on github</span>
-            <ArrowRight className="h-5 w-5" />
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </a>
         </div>
       </div>
