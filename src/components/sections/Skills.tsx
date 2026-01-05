@@ -48,15 +48,6 @@ export default function Skills() {
             </div>
           ))}
         </div>
-
-        {/* Additional note */}
-        <div className="mx-auto mt-20 max-w-2xl text-center">
-          <p className="text-body-md leading-relaxed text-foreground-subtle">
-            always learning, always growing. currently exploring cloud
-            architecture, system design patterns, and advanced typescript
-            patterns.
-          </p>
-        </div>
       </div>
     </section>
   );
