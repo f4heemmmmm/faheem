@@ -27,12 +27,16 @@ export interface Experience {
 
 // Projects
 export interface Project {
+  id: string;
   title: string;
   description: string;
+  longDescription?: string;
   technologies: string[];
+  image: string;
   githubUrl?: string;
   liveUrl?: string;
   featured?: boolean;
+  highlights?: string[];
 }
 
 // Skills

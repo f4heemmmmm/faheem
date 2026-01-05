@@ -1,13 +1,12 @@
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import Skills from "@/components/sections/Skills";
-import Footer from "@/components/sections/Footer";
 import Navigation from "@/components/ui/Navigation";
 import Projects from "@/components/sections/Projects";
 import Experience from "@/components/sections/Experience";
 import ScrollContainer from "@/components/ui/ScrollContainer";
 
-const sectionIds = ["home", "about", "experience", "projects", "skills", "contact"];
+const sectionIds = ["home", "about", "experience", "projects", "skills"];
 
 export default function Home() {
   return (
@@ -19,7 +18,6 @@ export default function Home() {
         <Experience />
         <Projects />
         <Skills />
-        <Footer />
       </ScrollContainer>
     </>
   );

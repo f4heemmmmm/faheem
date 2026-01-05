@@ -1,3 +1,5 @@
+import Link from "next/link";
+import Image from "next/image";
 import { Github, ExternalLink, ArrowRight } from "lucide-react";
 import { projects } from "@/data/projects";
 
@@ -8,7 +10,7 @@ export default function Projects() {
       aria-labelledby="projects-heading"
       className="flex min-h-screen snap-start items-center section-spacing"
     >
-      <div className="container-luxury">
+      <div className="w-full px-8 md:px-12 lg:px-16 xl:px-24">
         {/* Section header */}
         <div className="mb-12 md:mb-16">
           <p className="mb-4 text-caption tracking-widest text-foreground-subtle">
@@ -24,84 +26,111 @@ export default function Projects() {
 
         {/* Projects grid */}
         <div
-          className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8"
+          className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8"
           role="list"
           aria-label="Featured projects"
         >
           {projects.map((project, index) => (
             <article
-              key={project.title}
+              key={project.id}
               role="listitem"
-              className="group relative flex min-h-[400px] flex-col border border-border bg-background-subtle p-10 transition-all duration-400 ease-luxury hover:border-foreground-subtle/30 hover:bg-background-elevated lg:p-14"
+              className="group relative flex min-h-[420px] flex-col border border-border bg-background-subtle transition-all duration-400 ease-luxury hover:border-foreground-subtle/30 hover:bg-background-elevated"
             >
-              {/* Featured badge */}
-              {project.featured && (
-                <div className="absolute -top-px right-8 bg-foreground px-3 py-1">
-                  <span className="text-caption font-medium tracking-wider text-background">
-                    featured
+              {/* Card link overlay */}
+              <Link
+                href={`/projects/${project.id}`}
+                className="absolute inset-0 z-10"
+                aria-label={`View ${project.title} details`}
+              />
+
+              {/* Project image */}
+              <div className="relative aspect-[16/10] w-full overflow-hidden bg-background-elevated">
+                <Image
+                  src={project.image}
+                  alt={`${project.title} preview`}
+                  fill
+                  className="object-cover transition-transform duration-400 ease-luxury group-hover:scale-105"
+                />
+                {/* Featured badge */}
+                {project.featured && (
+                  <div className="absolute right-4 top-4 bg-foreground px-3 py-1">
+                    <span className="text-caption font-medium tracking-wider text-background">
+                      featured
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Content */}
+              <div className="flex flex-1 flex-col p-6 lg:p-8">
+                {/* Project number */}
+                <span
+                  className="mb-4 text-caption text-foreground-subtle/40"
+                  aria-hidden="true"
+                >
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+
+                {/* Title */}
+                <h3 className="mb-3 font-display text-body-xl font-medium text-foreground md:text-display-sm">
+                  {project.title}
+                </h3>
+
+                {/* Description */}
+                <p className="mb-6 flex-grow text-body-sm text-foreground-muted line-clamp-3">
+                  {project.description}
+                </p>
+
+                {/* Technologies */}
+                <ul
+                  className="mb-6 flex flex-wrap gap-2"
+                  aria-label={`Technologies used in ${project.title}`}
+                >
+                  {project.technologies.slice(0, 4).map((tech) => (
+                    <li
+                      key={tech}
+                      className="border border-border px-2 py-1 text-caption text-foreground-muted"
+                    >
+                      {tech}
+                    </li>
+                  ))}
+                  {project.technologies.length > 4 && (
+                    <li className="px-2 py-1 text-caption text-foreground-subtle">
+                      +{project.technologies.length - 4}
+                    </li>
+                  )}
+                </ul>
+
+                {/* Links */}
+                <div className="relative z-20 flex items-center gap-4">
+                  {project.githubUrl && (
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-body-sm text-foreground-muted transition-colors duration-300 hover:text-foreground"
+                      aria-label={`View ${project.title} source code on GitHub`}
+                    >
+                      <Github className="h-4 w-4" aria-hidden="true" />
+                      <span className="link-underline">code</span>
+                    </a>
+                  )}
+                  {project.liveUrl && (
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-body-sm text-foreground-muted transition-colors duration-300 hover:text-foreground"
+                      aria-label={`View ${project.title} live demo`}
+                    >
+                      <ExternalLink className="h-4 w-4" aria-hidden="true" />
+                      <span className="link-underline">live</span>
+                    </a>
+                  )}
+                  <span className="ml-auto text-body-sm text-foreground-subtle transition-colors duration-300 group-hover:text-foreground">
+                    view details →
                   </span>
                 </div>
-              )}
-
-              {/* Project number */}
-              <span
-                className="mb-8 text-caption text-foreground-subtle/40"
-                aria-hidden="true"
-              >
-                {String(index + 1).padStart(2, "0")}
-              </span>
-
-              {/* Title */}
-              <h3 className="mb-4 font-display text-display-sm font-medium text-foreground">
-                {project.title}
-              </h3>
-
-              {/* Description */}
-              <p className="mb-8 flex-grow text-body-md text-foreground-muted md:text-body-lg">
-                {project.description}
-              </p>
-
-              {/* Technologies */}
-              <ul
-                className="mb-10 flex flex-wrap gap-2"
-                aria-label={`Technologies used in ${project.title}`}
-              >
-                {project.technologies.map((tech) => (
-                  <li
-                    key={tech}
-                    className="border border-border px-3 py-1.5 text-caption text-foreground-muted"
-                  >
-                    {tech}
-                  </li>
-                ))}
-              </ul>
-
-              {/* Links */}
-              <div className="flex items-center gap-6">
-                {project.githubUrl && (
-                  <a
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-body-sm text-foreground-muted transition-colors duration-300 hover:text-foreground"
-                    aria-label={`View ${project.title} source code on GitHub`}
-                  >
-                    <Github className="h-4 w-4" aria-hidden="true" />
-                    <span className="link-underline">code</span>
-                  </a>
-                )}
-                {project.liveUrl && (
-                  <a
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-body-sm text-foreground-muted transition-colors duration-300 hover:text-foreground"
-                    aria-label={`View ${project.title} live demo`}
-                  >
-                    <ExternalLink className="h-4 w-4" aria-hidden="true" />
-                    <span className="link-underline">live demo</span>
-                  </a>
-                )}
               </div>
             </article>
           ))}
