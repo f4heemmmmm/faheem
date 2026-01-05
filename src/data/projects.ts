@@ -3,7 +3,7 @@ import type { Project } from "@/types";
 export const projects: Project[] = [
   {
     id: "actionhub",
-    title: "actionhub",
+    title: "action hub",
     subtitle: "AI-powered meeting intelligence platform built for Meaningful.",
     description:
       "meeting management system with automatic transcription, GPT-4 powered analysis, intelligent action item extraction, and bi-directional calendar sync across Google Meet, Teams, and Zoom.",
@@ -18,7 +18,7 @@ export const projects: Project[] = [
       "openai api",
       "nylas sdk",
     ],
-    image: "/images/projects/actionhub.png",
+    image: "/images/actionhub.png",
     liveUrl: "https://meaningful-crm.notion.site/Action-Hub-2a310bc3a934802c9731f339fccd5b45",
     featured: true,
     highlights: [
@@ -89,7 +89,7 @@ export const projects: Project[] = [
   },
   {
     id: "insider-threat-system",
-    title: "insider threat system",
+    title: "insiderguard",
     subtitle: "Enterprise SOC platform built during internship at Ensign Infosecurity.",
     description:
       "full-stack security operations center platform for detecting and investigating insider threats, featuring automated alert ingestion, incident correlation, and MITRE ATT&CK framework integration.",
@@ -104,7 +104,7 @@ export const projects: Project[] = [
       "tailwind css",
       "docker",
     ],
-    image: "/images/projects/insider-threat.png",
+    image: "/images/insiderguard.png",
     featured: true,
     highlights: [
       "Automated CSV ingestion with SHA-256 duplicate detection",
@@ -132,7 +132,7 @@ export const projects: Project[] = [
       "openai api",
       "nativewind",
     ],
-    image: "/images/projects/orbit.png",
+    image: "/images/orbit.png",
     featured: true,
     highlights: [
       "AI-powered receipt scanning with OpenAI Vision for expense extraction",
@@ -218,7 +218,7 @@ export const projects: Project[] = [
     longDescription:
       "A personal portfolio website designed and developed from scratch to showcase my skills, experiences, and projects. Built with modern web technologies and a focus on performance, the site features a dark, minimal aesthetic with smooth animations and intuitive navigation. The design emphasizes readability and user experience while maintaining a professional, high-end feel.",
     technologies: ["react", "next.js", "tailwind css", "typescript"],
-    image: "/images/projects/portfolio.png",
+    image: "/images/website.png",
     liveUrl: "https://www.faheemkamel.com/",
     highlights: [
       "Dark, minimal aesthetic with serif and monospace typography",
