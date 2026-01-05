@@ -135,20 +135,6 @@ export default function Projects() {
             </article>
           ))}
         </div>
-
-        {/* View all link */}
-        <div className="mt-16 text-center">
-          <a
-            href="https://github.com/faheem"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-body-md text-foreground-muted transition-colors duration-300 hover:text-foreground"
-            aria-label="View all projects on GitHub"
-          >
-            <span className="link-underline">view all projects on github</span>
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
-          </a>
-        </div>
       </div>
     </section>
   );
