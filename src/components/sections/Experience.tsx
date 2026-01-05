@@ -70,7 +70,7 @@ export default function Experience() {
 
                 {/* Hover indicator */}
                 <div
-                  className="absolute -left-4 top-1/2 h-0 w-0.5 -translate-y-1/2 bg-foreground transition-all duration-400 ease-luxury group-hover:h-12"
+                  className="absolute -left-2 top-1/2 hidden h-0 w-0.5 -translate-y-1/2 bg-foreground transition-all duration-400 ease-luxury group-hover:h-12 md:-left-4 md:block"
                   aria-hidden="true"
                 />
               </article>

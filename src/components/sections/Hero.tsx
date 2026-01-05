@@ -30,7 +30,7 @@ export default function Hero() {
             >
               hi, i am
               <br />
-              <span className="text-5xl font-light md:text-6xl lg:text-7xl">faheem kamel</span>
+              <span className="text-4xl font-light sm:text-5xl md:text-6xl lg:text-7xl">faheem kamel</span>
             </h1>
             <p
               className={`mt-8 max-w-xl text-lg font-normal leading-relaxed text-foreground-muted md:text-xl transition-all duration-800 ease-luxury delay-200 ${
@@ -75,7 +75,7 @@ export default function Hero() {
                 : "translate-y-8 opacity-0"
             }`}
           >
-            <div className="relative mx-auto aspect-square w-full max-w-md overflow-hidden rounded-full bg-background-elevated">
+            <div className="relative mx-auto aspect-square w-full max-w-xs sm:max-w-sm md:max-w-md overflow-hidden rounded-full bg-background-elevated">
               <Image
                 src="/images/profile.JPG"
                 alt="faheem kamel"

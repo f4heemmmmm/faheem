@@ -47,7 +47,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             <ArrowLeft className="h-4 w-4" />
             back to projects
           </Link>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             {project.githubUrl && (
               <a
                 href={project.githubUrl}
@@ -65,10 +65,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-none border border-foreground bg-foreground px-4 py-2 text-body-sm font-medium text-background transition-all duration-300 hover:bg-transparent hover:text-foreground"
+                className="inline-flex items-center gap-1.5 sm:gap-2 rounded-none border border-foreground bg-foreground px-3 py-1.5 sm:px-4 sm:py-2 text-body-sm font-medium text-background transition-all duration-300 hover:bg-transparent hover:text-foreground"
                 aria-label="View live demo"
               >
-                <span>view live</span>
+                <span className="hidden sm:inline">view live</span>
+                <span className="sm:hidden">live</span>
                 <ExternalLink className="h-4 w-4" />
               </a>
             )}
@@ -154,7 +155,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             )}
 
             {/* Actions */}
-            <div className="flex flex-wrap items-center gap-4 border-t border-border pt-12">
+            <div className="flex flex-col items-stretch gap-4 border-t border-border pt-12 sm:flex-row sm:flex-wrap sm:items-center">
               {project.liveUrl && (
                 <a
                   href={project.liveUrl}

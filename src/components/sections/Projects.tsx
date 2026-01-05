@@ -10,7 +10,7 @@ export default function Projects() {
       aria-labelledby="projects-heading"
       className="flex min-h-screen snap-start items-center section-spacing"
     >
-      <div className="w-full px-8 md:px-12 lg:px-16 xl:px-24">
+      <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-24">
         {/* Section header */}
         <div className="mb-12 md:mb-16">
           <p className="mb-4 text-caption tracking-widest text-foreground-subtle">
@@ -34,7 +34,7 @@ export default function Projects() {
             <article
               key={project.id}
               role="listitem"
-              className="group relative flex min-h-[420px] flex-col border border-border bg-background-subtle transition-all duration-400 ease-luxury hover:border-foreground-subtle/30 hover:bg-background-elevated"
+              className="group relative flex min-h-[380px] sm:min-h-[420px] flex-col border border-border bg-background-subtle transition-all duration-400 ease-luxury hover:border-foreground-subtle/30 hover:bg-background-elevated"
             >
               {/* Card link overlay */}
               <Link

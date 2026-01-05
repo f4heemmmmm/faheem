@@ -1,4 +1,41 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
+function useScrollReveal(threshold = 0.2) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(element);
+        }
+      },
+      { threshold }
+    );
+
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return { ref, isVisible };
+}
+
 export default function About() {
+  const header = useScrollReveal(0.3);
+  const intro = useScrollReveal(0.3);
+  const journey = useScrollReveal(0.2);
+  const math = useScrollReveal(0.2);
+  const sports = useScrollReveal(0.2);
+  const travel = useScrollReveal(0.2);
+
   return (
     <section
       id="about"
@@ -6,7 +43,14 @@ export default function About() {
       className="flex min-h-screen snap-start items-center section-spacing"
     >
       <div className="container-luxury">
-        <div className="mb-12 md:mb-16">
+        <div
+          ref={header.ref}
+          className={`mb-12 md:mb-16 transition-all duration-700 ease-out ${
+            header.isVisible
+              ? "translate-y-0 opacity-100"
+              : "translate-y-8 opacity-0"
+          }`}
+        >
           <p className="mb-4 text-caption tracking-widest text-foreground-subtle">
             about
           </p>
@@ -17,7 +61,14 @@ export default function About() {
             a brief introduction
           </h2>
         </div>
-        <div className="mb-16 max-w-4xl">
+        <div
+          ref={intro.ref}
+          className={`mb-16 max-w-4xl transition-all duration-700 ease-out delay-100 ${
+            intro.isVisible
+              ? "translate-y-0 opacity-100"
+              : "translate-y-8 opacity-0"
+          }`}
+        >
           <p className="text-body-xl leading-relaxed text-foreground-muted md:text-display-sm md:font-light">
             i am <span className="font-semibold">faheem kamel</span>, a year 3{" "}
             <span className="font-semibold">computer science</span> undergraduate
@@ -26,7 +77,14 @@ export default function About() {
           </p>
         </div>
         <div className="grid gap-12 md:grid-cols-2 lg:gap-x-16 lg:gap-y-12">
-          <div>
+          <div
+            ref={journey.ref}
+            className={`transition-all duration-700 ease-out ${
+              journey.isVisible
+                ? "translate-x-0 opacity-100"
+                : "-translate-x-12 opacity-0"
+            }`}
+          >
             <h3 className="mb-4 text-body-lg font-medium tracking-wider text-foreground">
               my journey
             </h3>
@@ -37,7 +95,14 @@ export default function About() {
               five-grade improvement that shaped my confidence.
             </p>
           </div>
-          <div className="md:pt-32">
+          <div
+            ref={math.ref}
+            className={`md:pt-32 transition-all duration-700 ease-out delay-150 ${
+              math.isVisible
+                ? "translate-x-0 opacity-100"
+                : "translate-x-12 opacity-0"
+            }`}
+          >
             <h3 className="mb-4 text-body-lg font-medium tracking-wider text-foreground">
               passion for mathematics
             </h3>
@@ -47,7 +112,14 @@ export default function About() {
               approach to building logical, elegant software solutions.
             </p>
           </div>
-          <div>
+          <div
+            ref={sports.ref}
+            className={`transition-all duration-700 ease-out ${
+              sports.isVisible
+                ? "translate-x-0 opacity-100"
+                : "-translate-x-12 opacity-0"
+            }`}
+          >
             <h3 className="mb-4 text-body-lg font-medium tracking-wider text-foreground">
               sports & athletics
             </h3>
@@ -57,7 +129,14 @@ export default function About() {
               floorball and play for woodlands csc skyhawks.
             </p>
           </div>
-          <div className="md:pt-32">
+          <div
+            ref={travel.ref}
+            className={`md:pt-32 transition-all duration-700 ease-out delay-150 ${
+              travel.isVisible
+                ? "translate-x-0 opacity-100"
+                : "translate-x-12 opacity-0"
+            }`}
+          >
             <h3 className="mb-4 text-body-lg font-medium tracking-wider text-foreground">
               travel & photography
             </h3>
