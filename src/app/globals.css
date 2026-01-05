@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth antialiased;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-feature-settings: "cv11", "ss01", "ss03";
+  }
+
+  /* Selection styling */
+  ::selection {
+    @apply bg-foreground/20 text-foreground;
+  }
+
+  /* Smooth focus states */
+  :focus-visible {
+    @apply outline-none ring-2 ring-foreground/20 ring-offset-2 ring-offset-background;
+  }
+
+  /* Typography defaults */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-medium tracking-tight;
+  }
+
+  p {
+    @apply text-foreground-muted;
+  }
+
+  /* Link styling */
+  a {
+    @apply transition-colors duration-300;
+  }
+}
+
+@layer components {
+  /* Container with luxury proportions */
+  .container-luxury {
+    @apply mx-auto w-full max-w-7xl px-6 md:px-8 lg:px-12;
+  }
+
+  /* Section spacing */
+  .section-spacing {
+    @apply py-24 md:py-32 lg:py-40;
+  }
+
+  /* Animated entrance classes */
+  .animate-on-scroll {
+    @apply opacity-0;
+  }
+
+  .animate-on-scroll.is-visible {
+    @apply animate-fade-up;
+  }
+
+  /* Subtle hover lift */
+  .hover-lift {
+    @apply transition-transform duration-400 ease-luxury;
+  }
+
+  .hover-lift:hover {
+    @apply -translate-y-1;
+  }
+
+  /* Elegant underline effect */
+  .link-underline {
+    @apply relative inline-block;
+  }
+
+  .link-underline::after {
+    @apply absolute bottom-0 left-0 h-px w-0 bg-foreground transition-all duration-400 ease-luxury content-[''];
+  }
+
+  .link-underline:hover::after {
+    @apply w-full;
+  }
+}
+
+@layer utilities {
+  /* Text balance for headlines */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Gradient text */
+  .text-gradient {
+    @apply bg-gradient-to-r from-foreground to-foreground-muted bg-clip-text text-transparent;
+  }
+
+  /* Animation delays for staggered reveals */
+  .animation-delay-100 { animation-delay: 100ms; }
+  .animation-delay-200 { animation-delay: 200ms; }
+  .animation-delay-300 { animation-delay: 300ms; }
+  .animation-delay-400 { animation-delay: 400ms; }
+  .animation-delay-500 { animation-delay: 500ms; }
+  .animation-delay-600 { animation-delay: 600ms; }
+
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
