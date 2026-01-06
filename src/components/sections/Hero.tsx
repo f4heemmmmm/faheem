@@ -15,7 +15,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative flex h-screen min-h-screen snap-start items-center overflow-hidden pt-20"
+      className="relative flex min-h-screen snap-start items-center overflow-hidden pt-24 pb-8 md:h-screen md:pt-20 md:pb-0"
     >
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/50" />
       <div className="container-luxury relative z-10">
