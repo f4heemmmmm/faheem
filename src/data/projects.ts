@@ -164,25 +164,6 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "hundrednow",
-    title: "hundrednow",
-    subtitle: "Original card game with custom mechanics built in Java.",
-    description:
-      "an original card game developed in java, implementing custom game mechanics, logic, and ui elements for an engaging player experience.",
-    longDescription:
-      "HundredNow is an original card game developed entirely in Java, showcasing strong object-oriented programming principles and game development fundamentals. The project features custom game mechanics, intuitive UI elements, and engaging gameplay logic that creates an immersive player experience. The game demonstrates proficiency in algorithm design, state management, and user interface development.",
-    technologies: ["java", "oop", "game logic"],
-    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2944&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    featured: true,
-    highlights: [
-      "Original game concept with unique mechanics",
-      "Object-oriented architecture for maintainable code",
-      "Custom game state management system",
-      "Intuitive user interface design",
-      "Comprehensive game logic and rule implementation",
-    ],
-  },
-  {
     id: "knightsbridge-house",
     title: "knightsbridge house",
     subtitle: "Marketing website for an international school expanding from Singapore to Thailand.",
