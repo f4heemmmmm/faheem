@@ -152,7 +152,7 @@ export const projects: Project[] = [
     longDescription:
       "RallyRank is a comprehensive tennis matchmaking and tournament management platform designed to bring fair competition to players of all skill levels. The system implements a custom ELO ranking algorithm that automatically matches players based on their performance history, ensuring balanced and competitive games. Built using agile methodologies with a focus on user experience, the platform streamlines tournament organization and player management.",
     technologies: ["react", "spring boot", "mongodb", "tailwind css", "axios"],
-    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2944&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    image: "/images/rallyrank.png",
     liveUrl: "https://rally-rank-frontend.web.app/",
     featured: true,
     highlights: [
