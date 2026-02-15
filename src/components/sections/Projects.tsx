@@ -65,19 +65,19 @@ export default function Projects() {
               <div className="flex flex-1 flex-col p-6 lg:p-8">
                 {/* Project number */}
                 <span
-                  className="mb-4 text-caption text-foreground-subtle/40"
+                  className="mb-4 hidden text-caption text-foreground-subtle/40 md:inline"
                   aria-hidden="true"
                 >
                   {String(index + 1).padStart(2, "0")}
                 </span>
 
                 {/* Title */}
-                <h3 className="mb-3 font-display text-body-xl font-medium text-foreground md:text-display-sm">
+                <h3 className="font-display text-body-sm font-medium text-foreground md:mb-3 md:text-display-sm">
                   {project.title}
                 </h3>
 
                 {/* Description */}
-                <p className="mb-6 flex-grow text-body-sm text-foreground-muted line-clamp-3">
+                <p className="mb-6 hidden flex-grow text-body-sm text-foreground-muted line-clamp-3 md:block">
                   {project.description}
                 </p>
 
