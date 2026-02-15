@@ -45,10 +45,10 @@ export default function About() {
       <div className="container-luxury">
         <div
           ref={header.ref}
-          className={`mb-12 md:mb-16 transition-all duration-700 ease-out ${
+          className={`mb-12 md:mb-16 md:transition-all md:duration-700 md:ease-out ${
             header.isVisible
-              ? "translate-y-0 opacity-100"
-              : "translate-y-8 opacity-0"
+              ? "md:translate-y-0 md:opacity-100"
+              : "md:translate-y-8 md:opacity-0"
           }`}
         >
           <p className="mb-4 text-caption tracking-widest text-foreground-subtle">
@@ -63,10 +63,10 @@ export default function About() {
         </div>
         <div
           ref={intro.ref}
-          className={`mb-16 max-w-4xl transition-all duration-700 ease-out delay-100 ${
+          className={`mb-16 max-w-4xl md:transition-all md:duration-700 md:ease-out md:delay-100 ${
             intro.isVisible
-              ? "translate-y-0 opacity-100"
-              : "translate-y-8 opacity-0"
+              ? "md:translate-y-0 md:opacity-100"
+              : "md:translate-y-8 md:opacity-0"
           }`}
         >
           <p className="text-body-xl leading-relaxed text-foreground-muted md:text-display-sm md:font-light">
@@ -79,10 +79,10 @@ export default function About() {
         <div className="grid gap-12 md:grid-cols-2 lg:gap-x-16 lg:gap-y-12">
           <div
             ref={journey.ref}
-            className={`transition-all duration-700 ease-out ${
+            className={`md:transition-all md:duration-700 md:ease-out ${
               journey.isVisible
-                ? "translate-x-0 opacity-100"
-                : "-translate-x-12 opacity-0"
+                ? "md:translate-x-0 md:opacity-100"
+                : "md:-translate-x-12 md:opacity-0"
             }`}
           >
             <h3 className="mb-4 text-body-lg font-medium tracking-wider text-foreground">
@@ -97,10 +97,10 @@ export default function About() {
           </div>
           <div
             ref={math.ref}
-            className={`md:pt-32 transition-all duration-700 ease-out delay-150 ${
+            className={`md:pt-32 md:transition-all md:duration-700 md:ease-out md:delay-150 ${
               math.isVisible
-                ? "translate-x-0 opacity-100"
-                : "translate-x-12 opacity-0"
+                ? "md:translate-x-0 md:opacity-100"
+                : "md:translate-x-12 md:opacity-0"
             }`}
           >
             <h3 className="mb-4 text-body-lg font-medium tracking-wider text-foreground">
@@ -114,10 +114,10 @@ export default function About() {
           </div>
           <div
             ref={sports.ref}
-            className={`transition-all duration-700 ease-out ${
+            className={`md:transition-all md:duration-700 md:ease-out ${
               sports.isVisible
-                ? "translate-x-0 opacity-100"
-                : "-translate-x-12 opacity-0"
+                ? "md:translate-x-0 md:opacity-100"
+                : "md:-translate-x-12 md:opacity-0"
             }`}
           >
             <h3 className="mb-4 text-body-lg font-medium tracking-wider text-foreground">
@@ -131,10 +131,10 @@ export default function About() {
           </div>
           <div
             ref={travel.ref}
-            className={`md:pt-32 transition-all duration-700 ease-out delay-150 ${
+            className={`md:pt-32 md:transition-all md:duration-700 md:ease-out md:delay-150 ${
               travel.isVisible
-                ? "translate-x-0 opacity-100"
-                : "translate-x-12 opacity-0"
+                ? "md:translate-x-0 md:opacity-100"
+                : "md:translate-x-12 md:opacity-0"
             }`}
           >
             <h3 className="mb-4 text-body-lg font-medium tracking-wider text-foreground">

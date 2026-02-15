@@ -1,5 +1,59 @@
+"use client";
+
+import { useState, useRef, useEffect } from "react";
+import { ChevronDown } from "lucide-react";
 import { experiences } from "@/data/experiences";
 import { CATEGORY_ICONS, CATEGORY_LABELS } from "@/lib/experience";
+
+function SkillsDropdown({ skills }: { skills: string[] }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState(0);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      setHeight(contentRef.current.scrollHeight);
+    }
+  }, [skills]);
+
+  return (
+    <div className="mt-6">
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="inline-flex items-center gap-2 text-body-sm font-medium tracking-wider text-foreground-subtle transition-colors duration-300 hover:text-foreground"
+      >
+        key achievements
+        <ChevronDown
+          className={`h-4 w-4 transition-transform duration-300 ease-out ${
+            isOpen ? "rotate-180" : ""
+          }`}
+        />
+      </button>
+      <div
+        style={{ maxHeight: isOpen ? `${height}px` : "0px" }}
+        className="overflow-hidden transition-[max-height] duration-500 ease-out"
+      >
+        <div ref={contentRef}>
+          <ul className="mt-4 space-y-3" aria-label="Key achievements">
+            {skills.map((skill) => (
+              <li
+                key={skill}
+                className="flex items-start gap-3 text-body-sm text-foreground-muted md:text-body-md"
+              >
+                <span
+                  className="mt-2.5 h-1 w-1 flex-shrink-0 rounded-full bg-foreground-subtle"
+                  aria-hidden="true"
+                />
+                {skill}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function Experience() {
   return (
@@ -32,38 +86,25 @@ export default function Experience() {
               >
                 <div className="grid gap-4 md:grid-cols-12 md:gap-8 md:items-baseline">
                   <div className="md:col-span-3">
-                    <p className="text-body-sm font-semibold text-foreground-subtle md:text-body-md">
+                    <p className="text-caption font-semibold text-foreground-subtle md:text-body-md">
                       <time>{item.date}</time>
                     </p>
-                    <div className="mt-2 flex items-center gap-2">
-                      <Icon className="h-4 w-4 text-foreground-subtle" aria-hidden="true" />
-                      <p className="text-body-sm font-medium tracking-wider text-foreground-subtle">
+                    <div className="mt-1 flex items-center gap-2 md:mt-2">
+                      <Icon className="h-3.5 w-3.5 text-foreground-subtle md:h-4 md:w-4" aria-hidden="true" />
+                      <p className="text-caption font-medium tracking-wider text-foreground-subtle md:text-body-sm">
                         {CATEGORY_LABELS[item.category]}
                       </p>
                     </div>
                   </div>
                   <div className="md:col-span-9">
-                    <h3 className="font-display text-display-sm font-medium text-foreground">
+                    <h3 className="font-display text-body-lg font-medium text-foreground md:text-display-sm">
                       {item.title}
                     </h3>
-                    <p className="mt-6 max-w-4xl text-body-lg text-foreground-muted">
+                    <p className="mt-4 max-w-4xl text-body-sm text-foreground-muted md:mt-6 md:text-body-lg">
                       {item.description}
                     </p>
                     {item.skills && item.skills.length > 0 && (
-                      <ul className="mt-6 space-y-3" aria-label="Key achievements">
-                        {item.skills.map((skill) => (
-                          <li
-                            key={skill}
-                            className="flex items-start gap-3 text-body-md text-foreground-muted"
-                          >
-                            <span
-                              className="mt-2.5 h-1 w-1 flex-shrink-0 rounded-full bg-foreground-subtle"
-                              aria-hidden="true"
-                            />
-                            {skill}
-                          </li>
-                        ))}
-                      </ul>
+                      <SkillsDropdown skills={item.skills} />
                     )}
                   </div>
                 </div>

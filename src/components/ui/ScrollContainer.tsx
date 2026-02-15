@@ -79,7 +79,7 @@ export default function ScrollContainer({ children, sectionIds }: ScrollContaine
       {/* Main scroll container */}
       <div
         ref={containerRef}
-        className="h-screen overflow-y-auto scroll-smooth snap-y snap-mandatory scrollbar-hide"
+        className="h-screen overflow-y-auto scroll-smooth snap-y snap-proximity md:snap-mandatory scrollbar-hide"
       >
         {children}
       </div>

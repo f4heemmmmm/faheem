@@ -26,7 +26,7 @@ export default function Projects() {
 
         {/* Projects grid */}
         <div
-          className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8"
+          className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8"
           role="list"
           aria-label="Featured projects"
         >
@@ -83,7 +83,7 @@ export default function Projects() {
 
                 {/* Technologies */}
                 <ul
-                  className="mb-6 flex flex-wrap gap-2"
+                  className="mb-6 hidden flex-wrap gap-2 md:flex"
                   aria-label={`Technologies used in ${project.title}`}
                 >
                   {project.technologies.slice(0, 4).map((tech) => (
@@ -102,7 +102,7 @@ export default function Projects() {
                 </ul>
 
                 {/* Links */}
-                <div className="relative z-20 flex items-center gap-4">
+                <div className="relative z-20 hidden items-center gap-4 md:flex">
                   {project.githubUrl && (
                     <a
                       href={project.githubUrl}
