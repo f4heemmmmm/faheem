@@ -5,7 +5,7 @@ export default function Skills() {
     <section
       id="skills"
       aria-labelledby="skills-heading"
-      className="flex min-h-screen snap-start items-center section-spacing bg-background-subtle"
+      className="section-spacing bg-background-subtle"
     >
       <div className="container-luxury">
         {/* Section header */}

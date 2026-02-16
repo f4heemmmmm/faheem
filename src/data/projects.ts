@@ -202,8 +202,8 @@ export const projects: Project[] = [
     image: "/images/website.png",
     liveUrl: "https://www.faheemkamel.com/",
     highlights: [
-      "Dark, minimal aesthetic with serif and monospace typography",
-      "Full-page scroll navigation with keyboard support",
+      "Dark, minimal aesthetic with serif and sans-serif typography",
+      "Smooth scroll navigation with section-based layout",
       "Server-side rendering for optimal performance",
       "Responsive design across all device sizes",
       "Accessible markup following WCAG guidelines",

@@ -14,10 +14,10 @@ export default function Footer() {
   return (
     <footer
       id="contact"
-      className="flex min-h-screen snap-start flex-col justify-center border-t border-border"
+      className="border-t border-border"
     >
       {/* Contact section */}
-      <div className="section-spacing flex flex-grow items-center">
+      <div className="section-spacing">
         <div className="container-luxury">
           <div className="mx-auto max-w-3xl text-center">
             <p className="mb-4 text-caption tracking-widest text-foreground-subtle">

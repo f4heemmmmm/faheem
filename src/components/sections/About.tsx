@@ -40,7 +40,7 @@ export default function About() {
     <section
       id="about"
       aria-labelledby="about-heading"
-      className="flex min-h-screen snap-start items-center section-spacing"
+      className="flex min-h-screen items-center section-spacing"
     >
       <div className="container-luxury">
         <div

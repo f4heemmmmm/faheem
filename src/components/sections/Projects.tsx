@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Github, ExternalLink, ArrowRight } from "lucide-react";
+import { Github, ExternalLink } from "lucide-react";
 import { projects } from "@/data/projects";
 
 export default function Projects() {
@@ -8,7 +8,7 @@ export default function Projects() {
     <section
       id="projects"
       aria-labelledby="projects-heading"
-      className="flex min-h-screen snap-start items-center section-spacing"
+      className="section-spacing"
     >
       <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-24">
         {/* Section header */}

@@ -9,19 +9,12 @@ export default function Navigation() {
   const lastScrollY = useRef(0);
 
   useEffect(() => {
-    // Find the scroll container (has overflow-y-auto and snap-y classes)
-    const scrollContainer = document.querySelector(".snap-y.snap-mandatory");
-
-    if (!scrollContainer) return;
-
     const handleScroll = () => {
-      const currentScrollY = scrollContainer.scrollTop;
+      const currentScrollY = window.scrollY;
 
-      // Show navbar when scrolling up or at the top
       if (currentScrollY < lastScrollY.current || currentScrollY < 50) {
         setIsVisible(true);
       } else {
-        // Hide navbar when scrolling down
         setIsVisible(false);
         setIsMobileMenuOpen(false);
       }
@@ -29,8 +22,8 @@ export default function Navigation() {
       lastScrollY.current = currentScrollY;
     };
 
-    scrollContainer.addEventListener("scroll", handleScroll, { passive: true });
-    return () => scrollContainer.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (

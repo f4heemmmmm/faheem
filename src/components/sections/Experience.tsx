@@ -60,7 +60,7 @@ export default function Experience() {
     <section
       id="experience"
       aria-labelledby="experience-heading"
-      className="flex min-h-screen snap-start items-center section-spacing bg-background-subtle"
+      className="section-spacing bg-background-subtle"
     >
       <div className="container-luxury">
         <div className="mb-12 md:mb-16">
