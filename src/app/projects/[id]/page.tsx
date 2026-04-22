@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ExternalLink, Github } from "lucide-react";
 import { getProjectById, getAllProjectIds } from "@/data/projects";
+import ModelViewerWrapper from "@/components/ui/ModelViewerWrapper";
 
 interface ProjectPageProps {
   params: Promise<{ id: string }>;
@@ -36,24 +37,24 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   }
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-white md:ml-[60px]">
       {/* Header */}
-      <header className="fixed left-0 right-0 top-0 z-50 border-b border-border bg-background/80 backdrop-blur-sm">
+      <header className="fixed left-0 right-0 top-0 z-40 border-b border-border bg-white/80 backdrop-blur-sm md:left-[60px]">
         <div className="container-luxury flex h-16 items-center justify-between">
           <Link
             href="/#projects"
-            className="inline-flex items-center gap-2 text-body-sm text-foreground-muted transition-colors duration-300 hover:text-foreground"
+            className="inline-flex items-center gap-2 font-mono text-caption uppercase tracking-normal text-foreground-muted transition-opacity duration-300 hover:opacity-60"
           >
             <ArrowLeft className="h-4 w-4" />
             back to projects
           </Link>
-          <div className="flex items-center gap-2 sm:gap-4">
+          <div className="flex items-center gap-3">
             {project.githubUrl && (
               <a
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-body-sm text-foreground-muted transition-colors duration-300 hover:text-foreground"
+                className="inline-flex items-center gap-2 font-mono text-caption uppercase text-foreground-muted transition-opacity duration-300 hover:opacity-60"
                 aria-label="View source code on GitHub"
               >
                 <Github className="h-4 w-4" />
@@ -65,12 +66,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 sm:gap-2 rounded-none border border-foreground bg-foreground px-3 py-1.5 sm:px-4 sm:py-2 text-body-sm font-medium text-background transition-all duration-300 hover:bg-transparent hover:text-foreground"
+                className="inline-flex items-center gap-1.5 rounded-full bg-foreground px-4 py-1.5 font-mono text-caption uppercase text-white transition-opacity duration-300 hover:opacity-80"
                 aria-label="View live demo"
               >
                 <span className="hidden sm:inline">view live</span>
                 <span className="sm:hidden">live</span>
-                <ExternalLink className="h-4 w-4" />
+                <ExternalLink className="h-3.5 w-3.5" />
               </a>
             )}
           </div>
@@ -79,25 +80,30 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
       {/* Content */}
       <div className="pt-16">
-        {/* Hero Image */}
-        <div className="relative aspect-[16/9] w-full overflow-hidden bg-background-subtle md:aspect-[21/9]">
-          <Image
-            src={project.image}
-            alt={`${project.title} preview`}
-            fill
-            className="object-cover object-top"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
-        </div>
+        {/* Hero: 3D viewer or image */}
+        {project.modelUrl ? (
+          <div className="relative h-[70vh] w-full bg-background-subtle md:h-[80vh]">
+            <ModelViewerWrapper modelUrl={project.modelUrl} mtlUrl={project.mtlUrl} className="h-full w-full" />
+          </div>
+        ) : (
+          <div className="relative aspect-[16/9] w-full overflow-hidden bg-background-subtle md:aspect-[21/9]">
+            <Image
+              src={project.image}
+              alt={`${project.title} preview`}
+              fill
+              className="object-cover object-top"
+              priority
+            />
+          </div>
+        )}
 
         {/* Project Info */}
         <div className="container-luxury py-16 md:py-24">
           <div className="mx-auto max-w-4xl">
             {/* Title & Description */}
-            <div className="mb-12">
+            <div className="mb-16">
               {project.featured && (
-                <span className="mb-4 inline-block text-caption font-medium tracking-wider text-foreground-subtle">
+                <span className="section-label mb-4 inline-block">
                   featured project
                 </span>
               )}
@@ -109,32 +115,25 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                   {project.subtitle}
                 </p>
               )}
-              <p className="mt-6 text-body-xl leading-relaxed text-foreground-muted">
+              <p className="mt-8 text-body-xl leading-relaxed text-foreground-muted">
                 {project.longDescription || project.description}
               </p>
             </div>
 
             {/* Technologies */}
-            <div className="mb-12">
-              <h2 className="mb-4 text-body-sm font-medium tracking-wider text-foreground">
+            <div className="mb-16">
+              <h2 className="mb-6 font-mono text-caption uppercase tracking-normal text-foreground-subtle">
                 technologies
               </h2>
-              <ul className="flex flex-wrap gap-2">
-                {project.technologies.map((tech) => (
-                  <li
-                    key={tech}
-                    className="border border-border bg-background-subtle px-4 py-2 text-body-sm text-foreground-muted"
-                  >
-                    {tech}
-                  </li>
-                ))}
-              </ul>
+              <p className="font-mono text-body-sm uppercase tracking-normal text-foreground-muted">
+                {project.technologies.join(" / ")}
+              </p>
             </div>
 
             {/* Highlights */}
             {project.highlights && project.highlights.length > 0 && (
-              <div className="mb-12">
-                <h2 className="mb-6 text-body-sm font-medium tracking-wider text-foreground">
+              <div className="mb-16">
+                <h2 className="mb-6 font-mono text-caption uppercase tracking-normal text-foreground-subtle">
                   key highlights
                 </h2>
                 <ul className="space-y-4">
@@ -161,10 +160,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                   href={project.liveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-none border border-foreground bg-foreground px-6 py-3 text-body-sm font-medium tracking-wider text-background transition-all duration-400 ease-luxury hover:bg-transparent hover:text-foreground"
+                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-foreground px-7 py-3.5 font-mono text-caption uppercase tracking-normal text-white transition-opacity duration-300 hover:opacity-80"
                 >
                   view live demo
-                  <ExternalLink className="h-4 w-4" />
+                  <ExternalLink className="h-3.5 w-3.5" />
                 </a>
               )}
               {project.githubUrl && (
@@ -172,10 +171,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                   href={project.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-none border border-border px-6 py-3 text-body-sm font-medium tracking-wider text-foreground transition-all duration-400 ease-luxury hover:border-foreground-subtle hover:bg-foreground/5"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-border px-7 py-3.5 font-mono text-caption uppercase tracking-normal text-foreground transition-all duration-300 hover:bg-background-subtle"
                 >
                   view source code
-                  <Github className="h-4 w-4" />
+                  <Github className="h-3.5 w-3.5" />
                 </a>
               )}
             </div>

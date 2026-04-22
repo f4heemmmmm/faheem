@@ -1,10 +1,10 @@
 import type { NavLink, SocialLink } from "@/types";
 
 export const NAV_LINKS: readonly NavLink[] = [
-  { name: "about", href: "#about" },
-  { name: "experience", href: "#experience" },
-  { name: "projects", href: "#projects" },
-  { name: "skills", href: "#skills" },
+  { name: "projects", href: "/projects" },
+  { name: "experience", href: "/experience" },
+  { name: "about", href: "/#about" },
+  { name: "skills", href: "/#skills" },
 ] as const;
 
 export const SOCIAL_LINKS: readonly SocialLink[] = [

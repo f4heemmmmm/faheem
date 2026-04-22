@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight, Download } from "lucide-react";
+import PressureText from "@/components/ui/PressureText";
+import AnimatedBackground from "@/components/ui/AnimatedBackground";
 
 export default function Hero() {
   const [isVisible, setIsVisible] = useState(false);
@@ -15,94 +17,75 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative flex min-h-screen items-center overflow-hidden pt-24 pb-8 md:pt-20 md:pb-0"
+      className="relative flex min-h-screen items-center overflow-hidden bg-white"
     >
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/50" />
+      <AnimatedBackground />
+
       <div className="container-luxury relative z-10">
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-          <div>
-            <h1
-              className={`text-3xl font-light leading-tight tracking-tight md:text-4xl lg:text-5xl transition-all duration-800 ease-luxury delay-100 ${
-                isVisible
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-8 opacity-0"
-              }`}
-            >
-              hi, i am
-              <br />
-              <span className="text-4xl font-light sm:text-5xl md:text-6xl lg:text-7xl">faheem kamel</span>
-            </h1>
-            <p
-              className={`mt-8 max-w-xl text-lg font-normal leading-relaxed text-foreground-muted md:text-xl transition-all duration-800 ease-luxury delay-200 ${
-                isVisible
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-8 opacity-0"
-              }`}
-            >
-              an aspiring software developer, hungry to make meaningful impact in
-              the tech industry.
-            </p>
-            <div
-              className={`mt-12 flex flex-col items-start gap-4 sm:flex-row sm:gap-6 transition-all duration-800 ease-luxury delay-300 ${
-                isVisible
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-8 opacity-0"
-              }`}
-            >
-              <a
-                href="#projects"
-                className="group inline-flex items-center gap-2 rounded-none border border-foreground bg-foreground px-7 py-3 text-base font-medium tracking-wider text-background transition-all duration-400 ease-luxury hover:bg-transparent hover:text-foreground"
-              >
-                view projects
-                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </a>
 
-              <a
-                href="/images/my-resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 rounded-none border border-border bg-transparent px-7 py-3 text-base font-medium tracking-wider text-foreground transition-all duration-400 ease-luxury hover:border-foreground-subtle hover:bg-foreground/5"
-              >
-                view resume
-                <Download className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5" />
-              </a>
-            </div>
-          </div>
-          <div
-            className={`relative transition-all duration-800 ease-luxury delay-200 ${
-              isVisible
-                ? "translate-y-0 opacity-100"
-                : "translate-y-8 opacity-0"
-            }`}
-          >
-            <div className="relative mx-auto aspect-square w-full max-w-xs sm:max-w-sm md:max-w-md overflow-hidden rounded-full bg-background-elevated">
-              <Image
-                src="/images/profile.JPG"
-                alt="faheem kamel"
-                fill
-                className="object-cover scale-150"
-                priority
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div
-        className={`absolute bottom-12 left-1/2 -translate-x-1/2 transition-all duration-800 ease-luxury delay-500 ${
-          isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-        }`}
-      >
-        <a
-          href="#about"
-          className="group flex flex-col items-center gap-2 text-foreground-subtle transition-colors duration-300 hover:text-foreground"
+        <div
+          className={`mt-6 transition-all duration-800 ease-luxury ${
+            isVisible
+              ? "translate-y-0 opacity-100"
+              : "translate-y-[30%] opacity-0"
+          }`}
+          style={{ transitionDelay: "700ms" }}
         >
-          <span className="text-xs font-normal tracking-widest">scroll</span>
-          <div className="relative h-12 w-px overflow-hidden bg-border">
-            <div className="absolute inset-x-0 top-0 h-full animate-pulse bg-gradient-to-b from-foreground-subtle to-transparent" />
-          </div>
-        </a>
+          <p className="text-lg font-medium text-slate-800">hi, i am</p>
+          <PressureText
+            text="faheem"
+            className="font-sans text-display-2xl leading-none tracking-tight text-foreground sm:text-[5.5rem] md:text-[7rem] lg:text-[8rem]"
+            minWeight={100}
+            maxWeight={900}
+            radius={250}
+          />
+          <PressureText
+            text="kamel"
+            className="font-sans text-display-2xl leading-none tracking-tight text-foreground sm:text-[5.5rem] md:text-[7rem] lg:text-[8rem]"
+            minWeight={100}
+            maxWeight={900}
+            radius={250}
+          />
+        </div>
+        <p
+          className={`mt-8 font-bold max-w-md text-lg leading-relaxed text-slate-800 transition-all duration-800 ease-luxury ${
+            isVisible
+              ? "translate-y-0 opacity-100"
+              : "translate-y-[30%] opacity-0"
+          }`}
+          style={{ transitionDelay: "900ms" }}
+        >
+          an aspiring software developer, hungry to make meaningful impact in
+          the tech industry.
+        </p>
+
+        {/* CTA buttons */}
+        <div
+          className={`mt-10 flex items-center gap-4 transition-all duration-800 ease-luxury ${
+            isVisible
+              ? "translate-y-0 opacity-100"
+              : "translate-y-[30%] opacity-0"
+          }`}
+          style={{ transitionDelay: "1100ms" }}
+        >
+          <Link
+            href="/projects"
+            className="font-poppins group text-xs font-semibold inline-flex items-center gap-2 rounded-full bg-foreground/10 px-6 py-3 font-mono text-caption uppercase tracking-normal text-foreground backdrop-blur-sm transition-all duration-300 hover:bg-foreground/20"
+          >
+            view projects
+            <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
+
+          <a
+            href="/images/my-resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-poppins text-xs font-semibold group inline-flex items-center gap-2 rounded-full bg-foreground/10 px-6 py-3 font-mono text-caption uppercase tracking-normal text-foreground backdrop-blur-sm transition-all duration-300 hover:bg-foreground/20"
+          >
+            resume
+            <Download className="h-3.5 w-3.5 font-semibold transition-transform duration-300 group-hover:-translate-y-0.5" />
+          </a>
+        </div>
       </div>
     </section>
   );

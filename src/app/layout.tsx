@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import { inter, playfair } from "@/lib/fonts";
+import { inter, playfair, spaceMono, poppins, extenda, gtAmerica } from "@/lib/fonts";
+import SmoothScroll from "@/components/ui/SmoothScroll";
+import Navigation from "@/components/ui/Navigation";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -34,8 +36,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
-      <body className="min-h-screen bg-background font-sans text-foreground">
+    <html lang="en" className={`${inter.variable} ${playfair.variable} ${spaceMono.variable} ${poppins.variable} ${extenda.variable} ${gtAmerica.variable}`}>
+      <body className="min-h-screen bg-white font-sans text-foreground">
+        <SmoothScroll />
+        <Navigation />
         {children}
       </body>
     </html>

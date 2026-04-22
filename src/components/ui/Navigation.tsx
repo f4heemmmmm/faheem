@@ -1,24 +1,42 @@
 "use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { NAV_LINKS, CONTACT_EMAIL } from "@/lib/constants";
 
+const ACTIVE_COLOR = "#e87b35";
+
 export default function Navigation() {
-  const [isVisible, setIsVisible] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
   const lastScrollY = useRef(0);
+  const pathname = usePathname();
+
+  // Determine which nav link is active
+  function isLinkActive(href: string) {
+    // Page-level routes like /experience, /works
+    if (!href.includes("#")) {
+      return pathname === href;
+    }
+    // Hash-based sections like /#about, /#skills — only match on home page
+    if (pathname === "/") {
+      const hash = href.split("#")[1];
+      return activeSection === hash;
+    }
+    return false;
+  }
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-
       if (currentScrollY < lastScrollY.current || currentScrollY < 50) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
         setIsMobileMenuOpen(false);
       }
-
       lastScrollY.current = currentScrollY;
     };
 
@@ -26,48 +44,111 @@ export default function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  return (
-    <div
-      className={`fixed left-0 right-0 top-0 z-50 bg-black transition-transform duration-300 ease-out ${
-        isVisible ? "translate-y-0" : "-translate-y-full"
-      }`}
-    >
-      <div className="container-luxury">
-        <nav className="flex h-20 items-center justify-between">
-          {/* Logo */}
-          <a
-            href="#home"
-            className="text-body-md font-medium tracking-wide text-foreground transition-colors duration-300 hover:text-foreground-muted"
-          >
-            {'<'}faheem&apos;s portfolio{' />'}
-          </a>
+  // Observe sections on the home page for hash-based links
+  useEffect(() => {
+    if (pathname !== "/") {
+      setActiveSection(null);
+      return;
+    }
 
-          {/* Desktop navigation */}
-          <ul className="hidden items-center gap-10 md:flex">
-            {NAV_LINKS.map((link) => (
+    const sectionIds = NAV_LINKS
+      .filter((link) => link.href.includes("#"))
+      .map((link) => link.href.split("#")[1]);
+
+    // Also observe the hero section so we can clear active state when it's in view
+    const allIds = ["home", ...sectionIds];
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Pick the most visible section
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible.length > 0) {
+          const visibleId = visible[0].target.id;
+          // "home" means hero is in view — no nav link should be active
+          setActiveSection(visibleId === "home" ? null : visibleId);
+        }
+      },
+      { rootMargin: "-40% 0px -40% 0px", threshold: [0, 0.25, 0.5] }
+    );
+
+    allIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [pathname]);
+
+  return (
+    <>
+      <nav className="fixed left-0 top-0 z-50 hidden h-screen w-[60px] flex-col items-center justify-between border-r border-border bg-white py-8 md:flex">
+        <Link
+          href="/"
+          className="font-poppins text-sm font-semibold uppercase tracking-normal text-foreground transition-opacity duration-300 hover:opacity-50"
+          style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+        >
+          faheem
+        </Link>
+
+        <ul className="flex flex-col items-center gap-8">
+          {NAV_LINKS.map((link) => {
+            const active = isLinkActive(link.href);
+            return (
               <li key={link.name}>
-                <a
+                <Link
                   href={link.href}
-                  className="text-body-sm text-foreground-muted transition-colors duration-300 hover:text-foreground"
+                  className="font-poppins text-sm font-medium uppercase tracking-normal transition-all duration-300 hover:opacity-50"
+                  style={{
+                    writingMode: "vertical-rl",
+                    transform: "rotate(180deg)",
+                    color: active ? ACTIVE_COLOR : undefined,
+                  }}
                 >
                   {link.name}
-                </a>
+                </Link>
               </li>
-            ))}
-            <li>
-              <a
-                href={`mailto:${CONTACT_EMAIL}`}
-                className="rounded-none border border-foreground bg-foreground px-5 py-2.5 text-body-sm font-medium text-background transition-all duration-300 hover:bg-transparent hover:text-foreground"
-              >
-                contact
-              </a>
-            </li>
-          </ul>
+            );
+          })}
+        </ul>
 
-          {/* Mobile menu button */}
+        <div className="flex flex-col items-center gap-6">
+          <a
+            href={`mailto:${CONTACT_EMAIL}`}
+            className="font-poppins text-sm uppercase tracking-normal text-foreground-subtle transition-opacity duration-300 hover:opacity-50"
+            style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+          >
+            contact
+          </a>
+          <a
+            href="/images/my-resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-poppins text-sm uppercase tracking-normal text-accent transition-all hover:underline hover:underline-offset-4 duration-300 hover:opacity-70"
+            style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+          >
+            resume
+          </a>
+        </div>
+      </nav>
+
+      <div
+        className={`fixed left-0 right-0 top-0 z-50 bg-white transition-transform duration-300 ease-out md:hidden ${
+          isVisible ? "translate-y-0" : "-translate-y-full"
+        }`}
+      >
+        <div className="flex h-14 items-center justify-between px-5">
+          <Link
+            href="/"
+            className="font-poppins text-body-sm font-bold uppercase tracking-normal text-foreground"
+          >
+            faheem
+          </Link>
+
           <button
             type="button"
-            className="flex h-10 w-10 items-center justify-center text-foreground md:hidden"
+            className="flex h-10 w-10 items-center justify-center text-foreground"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
           >
@@ -89,42 +170,57 @@ export default function Navigation() {
               />
             </div>
           </button>
-        </nav>
-      </div>
+        </div>
 
-      {/* Mobile menu */}
-      <div
-        className={`absolute left-0 right-0 border-b border-border bg-background transition-all duration-400 ease-luxury md:hidden ${
-          isMobileMenuOpen
-            ? "visible translate-y-0 opacity-100"
-            : "invisible -translate-y-4 opacity-0"
-        }`}
-      >
-        <div className="container-luxury py-8">
-          <ul className="space-y-6">
-            {NAV_LINKS.map((link) => (
-              <li key={link.name}>
+        {/* Mobile menu dropdown */}
+        <div
+          className={`border-b border-border bg-white transition-all duration-400 ease-luxury ${
+            isMobileMenuOpen
+              ? "visible translate-y-0 opacity-100"
+              : "invisible -translate-y-4 opacity-0"
+          }`}
+        >
+          <div className="px-5 py-6">
+            <ul className="space-y-5">
+              {NAV_LINKS.map((link) => {
+                const active = isLinkActive(link.href);
+                return (
+                  <li key={link.name}>
+                    <Link
+                      href={link.href}
+                      className="block font-poppins text-body-sm uppercase tracking-normal transition-opacity duration-300 hover:opacity-50"
+                      style={{ color: active ? ACTIVE_COLOR : undefined }}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                );
+              })}
+              <li>
                 <a
-                  href={link.href}
-                  className="block text-body-lg text-foreground-muted transition-colors duration-300 hover:text-foreground"
+                  href={`mailto:${CONTACT_EMAIL}`}
+                  className="block font-poppins text-body-sm uppercase tracking-normal text-foreground transition-opacity duration-300 hover:opacity-50"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  {link.name}
+                  contact
                 </a>
               </li>
-            ))}
-            <li className="pt-4">
-              <a
-                href={`mailto:${CONTACT_EMAIL}`}
-                className="inline-block rounded-none border border-foreground bg-foreground px-6 py-3 text-body-sm font-medium text-background transition-all duration-300 hover:bg-transparent hover:text-foreground"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                contact
-              </a>
-            </li>
-          </ul>
+              <li className="pt-2">
+                <a
+                  href="/images/my-resume.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-poppins text-body-sm lowercase tracking-normal text-accent underline underline-offset-4"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  resume
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

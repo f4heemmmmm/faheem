@@ -4,7 +4,7 @@ export const experiences: Experience[] = [
   {
     title: "university of victoria – full stack developer co-op",
     description:
-      "developed an ai meeting intelligence platform and email assistant for non-profit organisations, enabling automated transcription, smart communication, and workflow automation, while working with a community partner, Meaningful.",
+      "Developed an AI meeting intelligence platform and email assistant for non-profit organisations, enabling automated transcription, smart communication, and workflow automation, while working with a community partner, Meaningful.",
     date: "sep 2025 – dec 2025",
     category: "internship",
     skills: [
@@ -17,7 +17,7 @@ export const experiences: Experience[] = [
   {
     title: "ensign infosecurity – full stack developer intern",
     description:
-      "developed enterprise security applications and automated data processing pipelines, contributing to insider threat detection and incident response capabilities.",
+      "Developed enterprise security applications and automated data processing pipelines, contributing to insider threat detection and incident response capabilities.",
     date: "mar 2025 – aug 2025",
     category: "internship",
     skills: [
@@ -28,9 +28,9 @@ export const experiences: Experience[] = [
     ],
   },
   {
-    title: "the next lap – part-time tutor",
+    title: "the next lap – tutor",
     description:
-      "provided personalized tutoring for primary and secondary students, developing custom lesson plans and supplementary materials to enhance learning outcomes.",
+      "Provided personalized tutoring for primary and secondary students, developing custom lesson plans and supplementary materials to enhance learning outcomes.",
     date: "may 2024 – apr 2025",
     category: "education",
     skills: [
@@ -42,7 +42,7 @@ export const experiences: Experience[] = [
   {
     title: "friends2gather community service – mentor",
     description:
-      "partnered with life community services society to mentor children from underprivileged families through weekly educational sessions.",
+      "Partnered with Life Community Services Society to mentor children from underprivileged families through weekly educational sessions.",
     date: "jan 2024 – dec 2024",
     category: "volunteer",
     skills: [
@@ -54,7 +54,7 @@ export const experiences: Experience[] = [
   {
     title: "singapore police force – national service",
     description:
-      "served in border security and ground operations, demonstrating leadership through welfare initiatives and youth mentorship programs.",
+      "Served in border security and ground operations, demonstrating leadership through welfare initiatives and youth mentorship programs.",
     date: "apr 2021 – aug 2023",
     category: "service",
     skills: [

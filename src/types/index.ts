@@ -34,6 +34,8 @@ export interface Project {
   longDescription?: string;
   technologies: string[];
   image: string;
+  modelUrl?: string;
+  mtlUrl?: string;
   githubUrl?: string;
   liveUrl?: string;
   featured?: boolean;

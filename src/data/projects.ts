@@ -209,6 +209,27 @@ export const projects: Project[] = [
       "Accessible markup following WCAG guidelines",
     ],
   },
+  {
+    id: "3d-room",
+    title: "3d room",
+    subtitle: "Interactive 3D scene modeled in Blender.",
+    description:
+      "a detailed 3D room environment modeled and textured in Blender, rendered as an interactive WebGL experience that users can explore by orbiting, zooming, and panning.",
+    longDescription:
+      "A fully modeled 3D room environment created in Blender, featuring detailed textures, materials, and lighting. Exported as an optimized GLB file with Draco mesh compression and displayed in the browser using Three.js and React Three Fiber. Users can interactively orbit, zoom, and pan to explore the scene from any angle.",
+    technologies: ["blender", "three.js", "react three fiber", "webgl", "draco"],
+    image: "/images/3d-room.png",
+    modelUrl: "/models/TEST.obj",
+    mtlUrl: "/models/TEST.mtl",
+    featured: true,
+    highlights: [
+      "Detailed room environment modeled in Blender",
+      "PBR materials and textures for realistic rendering",
+      "Draco mesh compression for optimized web delivery",
+      "Interactive orbit controls for 360° exploration",
+      "Environment lighting with HDR image-based lighting",
+    ],
+  },
 ];
 
 export function getProjectById(id: string): Project | undefined {
