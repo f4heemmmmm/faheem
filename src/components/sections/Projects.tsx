@@ -83,6 +83,22 @@ export default function Projects() {
   const bgRef = useRef<HTMLElement | null>(null);
   const rafRef = useRef<number | null>(null);
   const smoothFloatingRef = useRef(0);
+  const [inView, setInView] = useState(false);
+  const sectionWrapperRef = useRef<HTMLDivElement>(null);
+
+  // Track whether the projects section is in the viewport
+  useEffect(() => {
+    const el = sectionWrapperRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0, rootMargin: "100px 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     let targetFloating = 0;
@@ -193,7 +209,10 @@ export default function Projects() {
 
   return (
     <section
-      ref={bgRef}
+      ref={(el) => {
+        bgRef.current = el;
+        sectionWrapperRef.current = el as HTMLDivElement;
+      }}
       className="grain-overlay relative"
       style={{
         backgroundColor: getTheme(0).backdrop,
@@ -203,18 +222,29 @@ export default function Projects() {
       <div className="relative">
         <div
           className="fixed inset-0 z-0 hidden md:left-[60px] lg:block"
-          style={{ transform: "translateZ(0)" }}
+          style={{
+            transform: "translateZ(0)",
+            visibility: inView ? "visible" : "hidden",
+            opacity: inView ? 1 : 0,
+            transition: "opacity 0.3s ease, visibility 0.3s ease",
+          }}
         >
           <Projects3DScene
             items={sceneItems}
             floatingIndexRef={floatingIndexRef}
             onCardClick={scrollToProject}
+            paused={!inView}
           />
         </div>
 
         <div
           className="pointer-events-none fixed inset-0 z-10 hidden md:left-[60px] lg:block"
-          style={{ transform: "translateZ(0)" }}
+          style={{
+            transform: "translateZ(0)",
+            visibility: inView ? "visible" : "hidden",
+            opacity: inView ? 1 : 0,
+            transition: "opacity 0.3s ease, visibility 0.3s ease",
+          }}
         >
           <div className="mx-auto flex h-full max-w-[1720px] px-10">
             <div className="relative flex h-full w-[480px] flex-col justify-center pb-20 pt-24">

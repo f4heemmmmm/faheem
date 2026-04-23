@@ -216,15 +216,18 @@ function Projects3DSceneInner({
   items,
   floatingIndexRef,
   onCardClick,
+  paused,
 }: {
   items: SceneItem[];
   floatingIndexRef: React.RefObject<number>;
   onCardClick?: (index: number) => void;
+  paused?: boolean;
 }) {
   return (
     <div className="absolute inset-y-0 right-0 w-full">
       <Canvas
         dpr={[1, 2]}
+        frameloop={paused ? "demand" : "always"}
         camera={{ position: [0, 0, 10], fov: 34, near: 0.1, far: 100 }}
         gl={{
           alpha: true,
