@@ -37,7 +37,6 @@ export default function PressureText({
       const distance = Math.sqrt(dx * dx + dy * dy);
 
       const proximity = Math.max(0, 1 - distance / radius);
-      // Ease out for smoother falloff
       const eased = proximity * proximity;
       const weight = Math.round(minWeight + eased * (maxWeight - minWeight));
 

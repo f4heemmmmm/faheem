@@ -6,7 +6,7 @@ export const projects: Project[] = [
     title: "action hub",
     subtitle: "AI-powered meeting intelligence platform built for Meaningful.",
     description:
-      "meeting management system with automatic transcription, GPT-4 powered analysis, intelligent action item extraction, and bi-directional calendar sync across Google Meet, Teams, and Zoom.",
+      "Meeting management system with automatic transcription, GPT-4 powered analysis, intelligent action item extraction, and bi-directional calendar sync across Google Meet, Teams, and Zoom.",
     longDescription:
       "ActionHub is an AI-powered meeting intelligence platform built as a feature module for Meaningful. The system features automatic meeting transcription via Nylas Notetaker, GPT-4 Turbo analysis for extracting summaries and action items, and an interactive GPT-4o chatbot for querying meeting content. Built with real-time SSE updates, the platform includes intelligent duplicate notetaker prevention, hybrid S3/MongoDB transcript storage with SHA-256 deduplication, and bi-directional calendar sync with all major providers.",
     technologies: [
@@ -35,7 +35,7 @@ export const projects: Project[] = [
     title: "smartmail",
     subtitle: "AI-powered nonprofit operations platform built for Meaningful.",
     description:
-      "enterprise-grade feature module for nonprofit management, featuring an intelligent email assistant with Model Context Protocol integration, workflow automation, and multi-channel communications.",
+      "Enterprise-grade feature module for nonprofit management, featuring an intelligent email assistant with Model Context Protocol integration, workflow automation, and multi-channel communications.",
     longDescription:
       "SmartMail is an AI-powered nonprofit operations platform built as a feature module for Meaningful, a company based in Victoria. The system features an intelligent email assistant powered by GPT-4 with Model Context Protocol (MCP) integration for secure, context-aware communications. Built with Next.js and Express.js, the platform includes a visual workflow automation engine with BullMQ distributed queues, multi-tenant architecture with complete data isolation, and comprehensive CRM capabilities with 95+ MongoDB schemas.",
     technologies: [
@@ -63,7 +63,7 @@ export const projects: Project[] = [
     title: "threadroom",
     subtitle: "Personal fashion e-commerce platform with AI shopping assistant.",
     description:
-      "full-stack e-commerce application for selling second-hand clothing, featuring an AI-powered chatbot for product discovery and outfit styling recommendations.",
+      "Full-stack e-commerce application for selling second-hand clothing, featuring an AI-powered chatbot for product discovery and outfit styling recommendations.",
     longDescription:
       "Threadroom is a personal fashion e-commerce platform built with Next.js 15 App Router, Server Components, and Server Actions. The application features an AI shopping assistant powered by GPT-4o-mini that enables natural language product search and outfit styling recommendations using color theory and category pairing rules. Built with Supabase for authentication and PostgreSQL with row-level security, the platform includes a full admin dashboard for product management, bulk CSV/Excel imports, and customer messaging.",
     technologies: [
@@ -92,7 +92,7 @@ export const projects: Project[] = [
     title: "insiderguard",
     subtitle: "Enterprise SOC platform built during internship at Ensign Infosecurity.",
     description:
-      "full-stack security operations center platform for detecting and investigating insider threats, featuring automated alert ingestion, incident correlation, and MITRE ATT&CK framework integration.",
+      "Full-stack security operations center platform for detecting and investigating insider threats, featuring automated alert ingestion, incident correlation, and MITRE ATT&CK framework integration.",
     longDescription:
       "An enterprise-grade Security Operations Center (SOC) platform designed to detect, track, and investigate insider threats. The system features automated CSV-based alert ingestion with SHA-256 deduplication, intelligent incident correlation using time-window matching, and comprehensive analytics dashboards. Built with Next.js and NestJS, it includes JWT authentication with HTTP-only cookies, full audit trails for compliance, and MITRE ATT&CK framework integration for industry-standard threat classification.",
     technologies: [
@@ -120,7 +120,7 @@ export const projects: Project[] = [
     title: "orbit",
     subtitle: "All-in-one mobile productivity and personal finance application.",
     description:
-      "cross-platform mobile app combining financial tracking, task management, bill splitting, and scheduling with AI-powered features including receipt scanning and task prioritization.",
+      "Cross-platform mobile app combining financial tracking, task management, bill splitting, and scheduling with AI-powered features including receipt scanning and task prioritization.",
     longDescription:
       "Orbit is a comprehensive mobile productivity platform built with React Native and Expo, designed to consolidate daily tools into a single unified experience. The app features financial tracking with AI-powered receipt scanning using OpenAI Vision, complex bill splitting with item-level assignments, task management with GPT-powered prioritization, and location-aware prayer time tracking. Built with a clean service-layer architecture, the app uses Supabase for authentication and PostgreSQL database with row-level security ensuring complete data isolation between users.",
     technologies: [
@@ -148,7 +148,7 @@ export const projects: Project[] = [
     title: "rallyrank",
     subtitle: "Tennis matchmaking and tournament platform with ELO ranking.",
     description:
-      "tennis matchmaking and tournament management system built with agile methodologies, featuring automatic matchmaking using a custom elo ranking algorithm for fair competition.",
+      "Tennis matchmaking and tournament management system built with agile methodologies, featuring automatic matchmaking using a custom ELO ranking algorithm for fair competition.",
     longDescription:
       "RallyRank is a comprehensive tennis matchmaking and tournament management platform designed to bring fair competition to players of all skill levels. The system implements a custom ELO ranking algorithm that automatically matches players based on their performance history, ensuring balanced and competitive games. Built using agile methodologies with a focus on user experience, the platform streamlines tournament organization and player management.",
     technologies: ["react", "spring boot", "mongodb", "tailwind css", "axios"],
@@ -168,7 +168,7 @@ export const projects: Project[] = [
     title: "knightsbridge house",
     subtitle: "Marketing website for an international school expanding from Singapore to Thailand.",
     description:
-      "full-stack website for an international school, featuring dynamic content pages, contact form with email integration, and interactive carousels.",
+      "Full-stack website for an international school, featuring dynamic content pages, contact form with email integration, and interactive carousels.",
     longDescription:
       "A full-stack marketing website built with Next.js 15 App Router and React 19. The project uses Static Site Generation for performance while maintaining client-side interactivity for carousels and forms. Implemented a contact form with Gmail SMTP integration using Nodemailer and Next.js API routes. UI built with shadcn/ui components and Radix UI primitives, styled with Tailwind CSS.",
     technologies: [
@@ -195,7 +195,7 @@ export const projects: Project[] = [
     title: "faheem's portfolio",
     subtitle: "Personal portfolio showcasing skills, experience, and projects.",
     description:
-      "fully responsive portfolio website built from scratch, featuring engaging sections for skills, experiences, and projects with interactive animations.",
+      "Fully responsive portfolio website built from scratch, featuring engaging sections for skills, experiences, and projects with interactive animations.",
     longDescription:
       "A personal portfolio website designed and developed from scratch to showcase my skills, experiences, and projects. Built with modern web technologies and a focus on performance, the site features a dark, minimal aesthetic with smooth animations and intuitive navigation. The design emphasizes readability and user experience while maintaining a professional, high-end feel.",
     technologies: ["react", "next.js", "tailwind css", "typescript"],
@@ -214,7 +214,7 @@ export const projects: Project[] = [
     title: "3d room",
     subtitle: "Interactive 3D scene modeled in Blender.",
     description:
-      "a detailed 3D room environment modeled and textured in Blender, rendered as an interactive WebGL experience that users can explore by orbiting, zooming, and panning.",
+      "A detailed 3D room environment modeled and textured in Blender, rendered as an interactive WebGL experience that users can explore by orbiting, zooming, and panning.",
     longDescription:
       "A fully modeled 3D room environment created in Blender, featuring detailed textures, materials, and lighting. Exported as an optimized GLB file with Draco mesh compression and displayed in the browser using Three.js and React Three Fiber. Users can interactively orbit, zoom, and pan to explore the scene from any angle.",
     technologies: ["blender", "three.js", "react three fiber", "webgl", "draco"],

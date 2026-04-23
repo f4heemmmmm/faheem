@@ -8,8 +8,12 @@
   }
 
   body {
-    @apply bg-white text-foreground font-sans;
+    @apply bg-[#333333] text-foreground font-sans;
     font-feature-settings: "cv11", "ss01", "ss03";
+  }
+
+  body.loaded {
+    @apply bg-white;
   }
 
   ::selection {
@@ -25,7 +29,7 @@
   }
 
   p {
-    @apply text-foreground-muted;
+    color: inherit;
   }
 
   a {
@@ -86,7 +90,6 @@
   .animation-delay-500 { animation-delay: 500ms; }
   .animation-delay-600 { animation-delay: 600ms; }
 
-  /* Conveyor-belt project text animation */
   .conveyor-fade-up {
     animation: conveyorFadeUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }

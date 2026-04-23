@@ -98,7 +98,6 @@ export default function AnimatedBackground() {
     const gl = canvas.getContext("webgl2") || canvas.getContext("webgl");
     if (!gl) return;
 
-    // Compile shaders
     function createShader(type: number, source: string) {
       const shader = gl!.createShader(type);
       if (!shader) return null;
@@ -129,7 +128,6 @@ export default function AnimatedBackground() {
 
     gl.useProgram(program);
 
-    // Fullscreen quad
     const positions = new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]);
     const buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);

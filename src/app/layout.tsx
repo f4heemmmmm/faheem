@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { inter, playfair, spaceMono, poppins, extenda, gtAmerica } from "@/lib/fonts";
 import SmoothScroll from "@/components/ui/SmoothScroll";
 import Navigation from "@/components/ui/Navigation";
+import LoadingScreen from "@/components/ui/LoadingScreen";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -37,10 +38,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable} ${spaceMono.variable} ${poppins.variable} ${extenda.variable} ${gtAmerica.variable}`}>
-      <body className="min-h-screen bg-white font-sans text-foreground">
-        <SmoothScroll />
-        <Navigation />
-        {children}
+      <body className="min-h-screen font-sans text-foreground">
+        <LoadingScreen>
+          <SmoothScroll />
+          <Navigation />
+          {children}
+        </LoadingScreen>
       </body>
     </html>
   );

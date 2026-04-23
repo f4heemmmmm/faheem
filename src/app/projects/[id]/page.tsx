@@ -38,7 +38,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <main className="min-h-screen bg-white md:ml-[60px]">
-      {/* Header */}
       <header className="fixed left-0 right-0 top-0 z-40 border-b border-border bg-white/80 backdrop-blur-sm md:left-[60px]">
         <div className="container-luxury flex h-16 items-center justify-between">
           <Link
@@ -78,9 +77,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </div>
       </header>
 
-      {/* Content */}
       <div className="pt-16">
-        {/* Hero: 3D viewer or image */}
         {project.modelUrl ? (
           <div className="relative h-[70vh] w-full bg-background-subtle md:h-[80vh]">
             <ModelViewerWrapper modelUrl={project.modelUrl} mtlUrl={project.mtlUrl} className="h-full w-full" />
@@ -97,10 +94,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           </div>
         )}
 
-        {/* Project Info */}
         <div className="container-luxury py-16 md:py-24">
           <div className="mx-auto max-w-4xl">
-            {/* Title & Description */}
             <div className="mb-16">
               {project.featured && (
                 <span className="section-label mb-4 inline-block">
@@ -120,7 +115,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               </p>
             </div>
 
-            {/* Technologies */}
             <div className="mb-16">
               <h2 className="mb-6 font-mono text-caption uppercase tracking-normal text-foreground-subtle">
                 technologies
@@ -130,7 +124,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               </p>
             </div>
 
-            {/* Highlights */}
             {project.highlights && project.highlights.length > 0 && (
               <div className="mb-16">
                 <h2 className="mb-6 font-mono text-caption uppercase tracking-normal text-foreground-subtle">
@@ -153,7 +146,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               </div>
             )}
 
-            {/* Actions */}
             <div className="flex flex-col items-stretch gap-4 border-t border-border pt-12 sm:flex-row sm:flex-wrap sm:items-center">
               {project.liveUrl && (
                 <a

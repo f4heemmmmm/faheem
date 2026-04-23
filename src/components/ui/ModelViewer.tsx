@@ -21,7 +21,6 @@ function Loader() {
 }
 
 function Model({ objUrl, mtlUrl }: { objUrl: string; mtlUrl?: string }) {
-  // Set resource path so textures resolve relative to the MTL/OBJ directory
   const basePath = (mtlUrl || objUrl).substring(0, (mtlUrl || objUrl).lastIndexOf("/") + 1);
 
   const materials = useLoader(MTLLoader, mtlUrl || "", (loader) => {
@@ -35,7 +34,6 @@ function Model({ objUrl, mtlUrl }: { objUrl: string; mtlUrl?: string }) {
     }
   });
 
-  // Center and scale the model
   const centered = useMemo(() => {
     const clone = obj.clone();
     const box = new THREE.Box3().setFromObject(clone);
@@ -83,7 +81,6 @@ export default function ModelViewer({ modelUrl, mtlUrl, className = "" }: ModelV
         </Suspense>
       </Canvas>
 
-      {/* Controls hint */}
       <div className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2">
         <p className="rounded-full bg-foreground/5 px-4 py-1.5 font-mono text-[10px] uppercase tracking-normal text-foreground-subtle backdrop-blur-sm">
           drag to rotate &middot; scroll to zoom &middot; right-click to pan

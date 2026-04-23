@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import dynamic from "next/dynamic";
+import { AnimatePresence, motion } from "framer-motion";
 import { projects } from "@/data/projects";
 
 const THEMES = [
@@ -49,189 +50,161 @@ function lerpColor(a: string, b: string, t: number): string {
   return `#${mix(ar, br)}${mix(ag, bg)}${mix(ab, bb)}`;
 }
 
+const textVariants = {
+  enter: {
+    opacity: 0,
+    y: 20,
+    filter: "blur(4px)",
+  },
+  center: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: {
+      duration: 0.5,
+      ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: -12,
+    filter: "blur(4px)",
+    transition: {
+      duration: 0.25,
+      ease: [0.4, 0, 1, 1] as [number, number, number, number],
+    },
+  },
+};
+
 export default function Projects() {
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [displayedIndex, setDisplayedIndex] = useState(0);
   const floatingIndexRef = useRef(0);
-  const [backgroundColor, setBackgroundColor] = useState(getTheme(0).backdrop);
-  const [phase, setPhase] = useState<"idle" | "out" | "in">("idle");
-  const pendingIndexRef = useRef<number | null>(null);
-  const timersRef = useRef<number[]>([]);
+  const bgRef = useRef<HTMLElement | null>(null);
   const rafRef = useRef<number | null>(null);
   const smoothFloatingRef = useRef(0);
 
-  const clearTimers = useCallback(() => {
-    timersRef.current.forEach((timer) => window.clearTimeout(timer));
-    timersRef.current = [];
-  }, []);
-
-  const transitionTo = useCallback(
-    (nextIndex: number) => {
-      if (nextIndex === displayedIndex && phase === "idle") {
-        return;
-      }
-
-      if (phase !== "idle") {
-        pendingIndexRef.current = nextIndex;
-        return;
-      }
-
-      setPhase("out");
-
-      const outTimer = window.setTimeout(() => {
-        const targetIndex = pendingIndexRef.current ?? nextIndex;
-        pendingIndexRef.current = null;
-        setDisplayedIndex(targetIndex);
-        setPhase("in");
-
-        const inTimer = window.setTimeout(() => {
-          setPhase("idle");
-          if (
-            pendingIndexRef.current !== null &&
-            pendingIndexRef.current !== targetIndex
-          ) {
-            const queuedIndex = pendingIndexRef.current;
-            pendingIndexRef.current = null;
-            transitionTo(queuedIndex);
-          }
-        }, 320);
-
-        timersRef.current.push(inTimer);
-      }, 180);
-
-      timersRef.current.push(outTimer);
-    },
-    [displayedIndex, phase]
-  );
-
   useEffect(() => {
     let targetFloating = 0;
-    let lastBgColor = backgroundColor;
-    let bgRafPending = false;
+    let lastBgColor = getTheme(0).backdrop;
 
     const updateActiveProject = () => {
       const firstSection = sectionRefs.current[0];
-      if (!firstSection) {
-        return;
-      }
+      if (!firstSection) return;
 
-      const viewportCenter = window.innerHeight / 2;
       const step = window.innerHeight || 1;
-      const rawIndex = clamp(-firstSection.getBoundingClientRect().top / step, 0, projects.length - 1);
+      const rawIndex = clamp(
+        -firstSection.getBoundingClientRect().top / step,
+        0,
+        projects.length - 1
+      );
       const closestIndex = Math.round(rawIndex);
 
       targetFloating = rawIndex;
-      setActiveIndex((current) => (current === closestIndex ? current : closestIndex));
+      setActiveIndex((current) =>
+        current === closestIndex ? current : closestIndex
+      );
 
-      // Throttle background color updates via RAF to avoid layout thrashing
-      if (!bgRafPending) {
-        bgRafPending = true;
-        requestAnimationFrame(() => {
-          bgRafPending = false;
-          const activeRect = sectionRefs.current[closestIndex]?.getBoundingClientRect();
-          if (activeRect) {
-            const progress =
-              (activeRect.top + activeRect.height / 2 - viewportCenter) / window.innerHeight;
-            const neighborIndex =
-              progress > 0
-                ? Math.max(0, closestIndex - 1)
-                : Math.min(projects.length - 1, closestIndex + 1);
-            const mix = clamp(Math.abs(progress) * 1.2, 0, 1);
-            const newColor = lerpColor(
-              getTheme(closestIndex).backdrop,
-              getTheme(neighborIndex).backdrop,
-              mix
-            );
-            if (newColor !== lastBgColor) {
-              lastBgColor = newColor;
-              setBackgroundColor(newColor);
-            }
-          }
-        });
+      const viewportCenter = window.innerHeight / 2;
+      const activeRect =
+        sectionRefs.current[closestIndex]?.getBoundingClientRect();
+      if (activeRect && bgRef.current) {
+        const progress =
+          (activeRect.top + activeRect.height / 2 - viewportCenter) /
+          window.innerHeight;
+        const neighborIndex =
+          progress > 0
+            ? Math.max(0, closestIndex - 1)
+            : Math.min(projects.length - 1, closestIndex + 1);
+        const mix = clamp(Math.abs(progress) * 1.2, 0, 1);
+        const newColor = lerpColor(
+          getTheme(closestIndex).backdrop,
+          getTheme(neighborIndex).backdrop,
+          mix
+        );
+        if (newColor !== lastBgColor) {
+          lastBgColor = newColor;
+          bgRef.current.style.backgroundColor = newColor;
+        }
       }
     };
 
-    // RAF loop for buttery smooth floating index interpolation — writes to ref only, no setState
     let lastTime = 0;
     const tick = (time: number) => {
       const delta = lastTime ? Math.min((time - lastTime) / 1000, 0.1) : 0.016;
       lastTime = time;
 
-      const factor = 1 - Math.pow(0.0001, delta);
-      smoothFloatingRef.current += (targetFloating - smoothFloatingRef.current) * factor;
+      const factor = 1 - Math.pow(0.006, delta);
+      smoothFloatingRef.current +=
+        (targetFloating - smoothFloatingRef.current) * factor;
 
       if (Math.abs(targetFloating - smoothFloatingRef.current) < 0.0005) {
         smoothFloatingRef.current = targetFloating;
       }
 
-      // Write directly to ref — the 3D scene reads it in useFrame, zero React re-renders
       floatingIndexRef.current = smoothFloatingRef.current;
       rafRef.current = requestAnimationFrame(tick);
     };
 
     rafRef.current = requestAnimationFrame(tick);
 
-    window.addEventListener("scroll", updateActiveProject, { passive: true });
+    const lenis = window.__lenis;
+    if (lenis) {
+      lenis.on("scroll", updateActiveProject);
+    } else {
+      window.addEventListener("scroll", updateActiveProject, { passive: true });
+    }
     window.addEventListener("resize", updateActiveProject);
     updateActiveProject();
 
     return () => {
-      window.removeEventListener("scroll", updateActiveProject);
+      if (lenis) {
+        lenis.off("scroll", updateActiveProject);
+      } else {
+        window.removeEventListener("scroll", updateActiveProject);
+      }
       window.removeEventListener("resize", updateActiveProject);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      clearTimers();
     };
-  }, [clearTimers]);
+  }, []);
 
-  useEffect(() => {
-    if (activeIndex !== displayedIndex) {
-      transitionTo(activeIndex);
-    }
-  }, [activeIndex, displayedIndex, transitionTo]);
-
-  const activeProject = projects[displayedIndex];
-  const activeTheme = getTheme(displayedIndex);
-
-  const textTransitionStyle = {
-    opacity: phase === "out" ? 0 : 1,
-    transform: phase === "out" ? "translate3d(0,18px,0)" : "translate3d(0,0,0)",
-    willChange: "transform, opacity",
-    backfaceVisibility: "hidden" as const,
-    transition:
-      phase === "out"
-        ? "opacity 180ms cubic-bezier(0.55,0,1,0.45), transform 180ms cubic-bezier(0.55,0,1,0.45)"
-        : "opacity 320ms cubic-bezier(0.16,1,0.3,1), transform 320ms cubic-bezier(0.16,1,0.3,1)",
-  } as const;
+  const activeProject = projects[activeIndex];
+  const activeTheme = getTheme(activeIndex);
 
   const scrollToProject = useCallback((index: number) => {
     const target = sectionRefs.current[index];
     if (target && window.__lenis) {
       window.__lenis.scrollTo(target, {
         offset: -(window.innerHeight / 2 - target.offsetHeight / 2),
-        duration: 0.9,
+        duration: 1.2,
       });
     }
   }, []);
 
   const sceneItems = useMemo(
-    () => projects.map((project) => ({ id: project.id, title: project.title, image: project.image })),
+    () =>
+      projects.map((project) => ({
+        id: project.id,
+        title: project.title,
+        image: project.image,
+      })),
     []
   );
 
-
   return (
     <section
+      ref={bgRef}
       className="grain-overlay relative"
       style={{
-        backgroundColor,
-        transition: "background-color 400ms linear",
+        backgroundColor: getTheme(0).backdrop,
         willChange: "background-color",
       }}
     >
       <div className="relative">
-        {/* Full-screen 3D canvas as background — pointer events enabled for card clicks */}
-        <div className="fixed inset-0 z-0 hidden md:left-[60px] lg:block" style={{ transform: "translateZ(0)" }}>
+        <div
+          className="fixed inset-0 z-0 hidden md:left-[60px] lg:block"
+          style={{ transform: "translateZ(0)" }}
+        >
           <Projects3DScene
             items={sceneItems}
             floatingIndexRef={floatingIndexRef}
@@ -239,51 +212,37 @@ export default function Projects() {
           />
         </div>
 
-        {/* Text overlay on top of 3D space */}
-        <div className="pointer-events-none fixed inset-0 z-10 hidden md:left-[60px] lg:block" style={{ transform: "translateZ(0)" }}>
+        <div
+          className="pointer-events-none fixed inset-0 z-10 hidden md:left-[60px] lg:block"
+          style={{ transform: "translateZ(0)" }}
+        >
           <div className="mx-auto flex h-full max-w-[1720px] px-10">
             <div className="relative flex h-full w-[480px] flex-col justify-center pb-20 pt-24">
-              <div className="max-w-[480px]" style={textTransitionStyle}>
-                <h1
-                  className="font-display text-[clamp(4rem,8vw,7.5rem)] font-semibold leading-[0.86] tracking-[-0.07em]"
-                  style={{ color: activeTheme.accent }}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeIndex}
+                  className="max-w-[480px]"
+                  variants={textVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
                 >
-                  {activeProject.title}
-                </h1>
+                  <h1
+                    className="font-extenda text-[clamp(4rem,8vw,7.5rem)] uppercase font-semibold leading-[0.86] tracking-[-0.02em]"
+                    style={{ color: activeTheme.accent }}
+                  >
+                    {activeProject.title}
+                  </h1>
 
-                <p className="mt-10 max-w-[440px] text-[21px] leading-[1.6] text-black/82">
-                  {activeProject.description}
-                </p>
-
-              </div>
-
+                  <p className="mt-10 max-w-[440px] font-gt-america text-body-xl leading-[1.7] text-black/82">
+                    {activeProject.description}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
             </div>
           </div>
         </div>
 
-        <div className="pointer-events-none fixed inset-0 z-20 hidden md:left-[60px] lg:block">
-          <div className="absolute right-8 top-1/2 flex -translate-y-1/2 flex-col gap-5">
-            {projects.map((project, index) => (
-              <button
-                key={project.id}
-                type="button"
-                className="pointer-events-auto h-10 w-6"
-                aria-label={`Go to ${project.title}`}
-                onClick={() => scrollToProject(index)}
-              >
-                <span
-                  className="mx-auto block rounded-full transition-all duration-300"
-                  style={{
-                    width: activeIndex === index ? "10px" : "8px",
-                    height: activeIndex === index ? "22px" : "22px",
-                    backgroundColor:
-                      activeIndex === index ? activeTheme.accent : "rgba(17,17,17,0.28)",
-                  }}
-                />
-              </button>
-            ))}
-          </div>
-        </div>
 
         <div className="relative z-0 lg:hidden">
           <div className="space-y-12 px-5 pb-16 pt-20">
@@ -305,12 +264,12 @@ export default function Projects() {
                     />
                   </div>
                   <h2
-                    className="mt-6 font-display text-[3.25rem] leading-[0.95] tracking-[-0.06em]"
+                    className="mt-6 font-extenda text-[clamp(2rem,8vw,3.25rem)] uppercase leading-[0.95] tracking-[-0.02em]"
                     style={{ color: theme.accent }}
                   >
                     {project.title}
                   </h2>
-                  <p className="mt-4 text-[17px] leading-[1.75] text-black/76">
+                  <p className="mt-4 font-gt-america text-[17px] leading-[1.75] text-black/76">
                     {project.description}
                   </p>
                 </article>
@@ -331,7 +290,6 @@ export default function Projects() {
           ))}
         </div>
       </div>
-
     </section>
   );
 }

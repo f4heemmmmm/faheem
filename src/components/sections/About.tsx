@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import { MapPin, GraduationCap, Trophy, Camera, Brain, Github, Linkedin, Mail } from "lucide-react";
+import { Github, Linkedin, Mail } from "lucide-react";
 
 function useScrollReveal(threshold = 0.15) {
   const ref = useRef<HTMLDivElement>(null);
@@ -56,206 +55,141 @@ function Bubble({
 }
 
 export default function About() {
-  const header = useScrollReveal(0.3);
-
   return (
     <section
       id="about"
       aria-labelledby="about-heading"
-      className="section-spacing bg-white"
+      className="flex min-h-screen items-center bg-white"
     >
-      <div className="container-luxury">
-        {/* Section header */}
-        <div
-          ref={header.ref}
-          className={`mb-12 md:mb-16 md:transition-all md:duration-700 md:ease-out ${
-            header.isVisible
-              ? "md:translate-y-0 md:opacity-100"
-              : "md:translate-y-8 md:opacity-0"
-          }`}
-        >
-          <p className="section-label mb-4">{"// about"}</p>
-          <h2
-            id="about-heading"
-            className="font-display text-display-sm font-medium tracking-tight text-foreground md:text-display-md"
-          >
-            a brief introduction
-          </h2>
-        </div>
-
-        {/* Two-column bento layout — 4 explicit rows shared between left & right */}
-        <div className="grid gap-5 lg:grid-cols-2 lg:grid-rows-[auto_auto_auto_auto]">
-          {/* ── LEFT: Main bio bubble (spans all 4 rows) ── */}
-          <Bubble className="flex flex-col justify-between p-8 md:p-10 lg:row-span-4" delay={0}>
+      <div className="container-luxury max-w-[1500px]">
+        <div className="grid gap-5 lg:grid-cols-4">
+          <Bubble className="flex flex-col justify-between p-8 md:p-10 lg:col-span-3" delay={0}>
             <div>
-              <div className="mb-8 flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#e87b35]/10">
-                  <span className="text-xl">👋</span>
-                </div>
-                <div>
-                  <p className="font-poppins text-sm font-semibold uppercase tracking-normal text-[#e87b35]">
-                    who i am
-                  </p>
-                </div>
-              </div>
+              <p className="mb-4 font-gt-america text-sm font-semibold tracking-normal text-[#e87b35]">
+                Who I Am
+              </p>
 
-              <h3 className="mb-6 font-display text-[2rem] font-medium leading-tight tracking-tight text-foreground md:text-[2.5rem]">
-                i&apos;m faheem kamel
+              <h3 className="mb-6 font-gt-america text-[2rem] font-bold leading-tight tracking-tight text-foreground md:text-[2.5rem]">
+                I&apos;m Faheem Kamel
               </h3>
 
-              <div className="space-y-5 text-[17px] leading-[1.75] text-foreground-muted">
+              <div className="space-y-5 font-gt-america text-[17px] leading-[1.75] text-slate-700">
                 <p>
-                  a year 3{" "}
-                  <span className="font-semibold text-foreground">computer science</span>{" "}
+                  A Year 4{" "}
+                  <span className="font-semibold text-foreground">Computer Science</span>{" "}
                   undergraduate at{" "}
                   <span className="font-semibold text-foreground">
-                    singapore management university
+                    Singapore Management University
                   </span>
                   , majoring in{" "}
-                  <span className="font-semibold text-foreground">cybersecurity</span>.
+                  <span className="font-semibold text-foreground">Cybersecurity</span>.
                 </p>
                 <p>
-                  my coding journey started in junior college with a-level
-                  computing. after 1.5 years of struggling, i changed my
-                  approach — dedicating 3 hours daily to rebuilding concepts my
-                  way. by a-levels, i achieved a five-grade improvement that
-                  shaped my confidence.
+                  My coding journey began in Junior College, when I chose
+                  Computing as one of my A-Level subjects. My programming
+                  journey wasn&apos;t exactly smooth sailing. The first 1.5 years
+                  were challenging. I struggled significantly, failing most
+                  of my tests and exams and receiving below-average grades for
+                  my assignments. It was especially discouraging (and humiliating)
+                  to see all my friends succeed in areas I thought I could never.
+                  <span className = "font-bold"> Fun Fact: </span>I actually almost repeated my JC Year 1 because of this subject.
                 </p>
                 <p>
-                  i see mathematics as a universal language explaining how the
-                  world works. this passion for connecting ideas across fields
-                  shapes my approach to building logical, elegant software
-                  solutions.
+                  Instead of giving up, I changed my approach. I dedicated 3 hours
+                  everyday to rebuild my understanding of concepts in a way that worked
+                  for me. That shift made all the difference. By the time I sat for my
+                  A-Levels, I achieved a 5-grade improvement, an experience that transformed
+                  not just my results, but confidence in myself.
+                </p>
+                <p>
+                  The mindset of adapting and learning differently is what
+                  contributes to drive me today. It has allowed me to grow
+                  beyond the classroom. I&apos;m now building websites, softwares,
+                  applications (sometimes just for fun), and real-world
+                  solutions, which was something I never thought I could
+                  accomplish at the start of my journey.
                 </p>
               </div>
             </div>
 
-            {/* Social links */}
-            <div className="mt-10 flex items-center gap-4">
+            <div className="mt-6 flex items-center gap-4">
               <a
                 href="https://github.com/f4heemmmmm"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-11 w-11 items-center justify-center rounded-full bg-foreground text-white transition-opacity duration-300 hover:opacity-70"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-white transition-opacity duration-300 hover:opacity-70"
                 aria-label="GitHub"
               >
-                <Github className="h-5 w-5" />
+                <Github className="h-4 w-4" />
               </a>
               <a
                 href="https://linkedin.com/in/faheemkamel"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-11 w-11 items-center justify-center rounded-full bg-[#0077b5] text-white transition-opacity duration-300 hover:opacity-70"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-[#0077b5] text-white transition-opacity duration-300 hover:opacity-70"
                 aria-label="LinkedIn"
               >
-                <Linkedin className="h-5 w-5" />
+                <Linkedin className="h-4 w-4" />
               </a>
               <a
                 href="mailto:f4heemmmm@gmail.com"
-                className="flex h-11 w-11 items-center justify-center rounded-full bg-[#e87b35] text-white transition-opacity duration-300 hover:opacity-70"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-[#e87b35] text-white transition-opacity duration-300 hover:opacity-70"
                 aria-label="Email"
               >
-                <Mail className="h-5 w-5" />
+                <Mail className="h-4 w-4" />
               </a>
             </div>
           </Bubble>
 
-          {/* ── RIGHT: Row 1 — Location & Education (side by side) ── */}
-          <div className="grid grid-cols-2 gap-5">
-            <Bubble className="relative overflow-hidden p-6" delay={100}>
-              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-[#e87b35]/10">
-                <MapPin className="h-5 w-5 text-[#e87b35]" />
-              </div>
-              <p className="font-poppins text-xs font-medium uppercase tracking-normal text-foreground-subtle">
-                based in
+          <div className="flex flex-col gap-5 lg:col-span-1 lg:h-full">
+            <Bubble className="p-6" delay={100}>
+              <p className="font-gt-america text-sm font-semibold tracking-normal text-slate-600">
+                Based In
               </p>
-              <p className="mt-1 text-xl font-semibold text-foreground">
-                Singapore 🇸🇬
+              <p className="mt-1 font-gt-america text-xl font-semibold text-foreground">
+                Singapore
+              </p>
+              <div className="mt-4 border-t border-border pt-4">
+                <p className="font-gt-america text-sm font-semibold tracking-normal text-slate-600">
+                  Studying At
+                </p>
+                <p className="mt-1 font-gt-america text-xl font-semibold text-foreground">
+                  SMU
+                </p>
+                <p className="mt-0.5 font-gt-america text-base italic text-foreground-muted">
+                  B.Sc Computer Science
+                </p>
+              </div>
+            </Bubble>
+
+            <Bubble className="p-6" delay={200}>
+              <p className="font-gt-america text-sm font-semibold tracking-normal text-slate-600">
+                Hobbies
+              </p>
+              <p className="mt-1.5 font-gt-america text-base leading-relaxed text-slate-700">
+                I enjoy <br /> playing floorball, <br /> watching movies, <br /> listening to music, <br /> traveling, <br /> and photography.
+                <br /> I capture moments through  my lens, a creative outlet that complements my technical work.
               </p>
             </Bubble>
 
-            <Bubble className="relative overflow-hidden p-6" delay={200}>
-              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-blue-500/10">
-                <GraduationCap className="h-5 w-5 text-blue-500" />
-              </div>
-              <p className="font-poppins text-xs font-medium uppercase tracking-normal text-foreground-subtle">
-                studying at
-              </p>
-              <p className="mt-1 text-xl font-semibold text-foreground">
-                SMU
-              </p>
-              <p className="mt-0.5 text-sm text-foreground-muted">
-                B.Sc Computer Science
-              </p>
-            </Bubble>
-          </div>
-
-          {/* ── RIGHT: Row 2 — Photo & Sports (side by side, equal height) ── */}
-          <div className="grid grid-cols-2 gap-5">
-            <Bubble className="relative min-h-[220px] overflow-hidden p-0" delay={300}>
-              <Image
-                src="/images/profile.JPG"
-                alt="Faheem Kamel"
-                fill
-                sizes="(max-width: 768px) 100vw, 280px"
-                className="object-cover"
-              />
-            </Bubble>
-
-            <Bubble className="relative flex flex-col overflow-hidden p-6" delay={400}>
-              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-green-500/10">
-                <Trophy className="h-5 w-5 text-green-500" />
-              </div>
-              <p className="font-poppins text-xs font-medium uppercase tracking-normal text-foreground-subtle">
-                athletics
-              </p>
-              <p className="mt-1 text-lg font-semibold text-foreground">
-                Floorball
-              </p>
-              <p className="mt-1 text-sm leading-relaxed text-foreground-muted">
-                university team & woodlands csc skyhawks
-              </p>
+            <Bubble className="flex flex-1 items-center p-6" delay={300}>
+              <a
+                href="/photographs"
+                className="group flex w-full items-center justify-between font-gt-america text-sm font-semibold text-foreground transition-opacity duration-300 hover:opacity-70"
+              >
+                View my photographs
+                <svg
+                  className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
             </Bubble>
           </div>
-
-          {/* ── RIGHT: Row 3 — Travel & Photography (full width) ── */}
-          <Bubble className="relative overflow-hidden p-6" delay={500}>
-            <div className="flex items-start gap-5">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-purple-500/10">
-                <Camera className="h-5 w-5 text-purple-500" />
-              </div>
-              <div>
-                <p className="font-poppins text-xs font-medium uppercase tracking-normal text-foreground-subtle">
-                  travel & photography
-                </p>
-                <p className="mt-1.5 text-[15px] leading-relaxed text-foreground-muted">
-                  traveling broadens my perspective and understanding of
-                  different cultures. i capture moments through photography —
-                  a creative outlet that complements my technical work.
-                </p>
-              </div>
-            </div>
-          </Bubble>
-
-          {/* ── RIGHT: Row 4 — What drives me (full width) ── */}
-          <Bubble className="relative overflow-hidden p-6" delay={600}>
-            <div className="flex items-start gap-5">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#e87b35]/10">
-                <Brain className="h-5 w-5 text-[#e87b35]" />
-              </div>
-              <div>
-                <p className="font-poppins text-xs font-medium uppercase tracking-normal text-foreground-subtle">
-                  what drives me
-                </p>
-                <p className="mt-1.5 text-[15px] leading-relaxed text-foreground-muted">
-                  i love tackling problems that sit at the intersection of
-                  logic and creativity. whether it&apos;s optimizing an algorithm
-                  or designing a user experience, i&apos;m always looking for
-                  elegant solutions.
-                </p>
-              </div>
-            </div>
-          </Bubble>
         </div>
       </div>
     </section>

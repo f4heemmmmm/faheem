@@ -14,13 +14,10 @@ export default function Navigation() {
   const lastScrollY = useRef(0);
   const pathname = usePathname();
 
-  // Determine which nav link is active
   function isLinkActive(href: string) {
-    // Page-level routes like /experience, /works
     if (!href.includes("#")) {
       return pathname === href;
     }
-    // Hash-based sections like /#about, /#skills — only match on home page
     if (pathname === "/") {
       const hash = href.split("#")[1];
       return activeSection === hash;
@@ -44,7 +41,6 @@ export default function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Observe sections on the home page for hash-based links
   useEffect(() => {
     if (pathname !== "/") {
       setActiveSection(null);
@@ -55,18 +51,15 @@ export default function Navigation() {
       .filter((link) => link.href.includes("#"))
       .map((link) => link.href.split("#")[1]);
 
-    // Also observe the hero section so we can clear active state when it's in view
     const allIds = ["home", ...sectionIds];
 
     const observer = new IntersectionObserver(
       (entries) => {
-        // Pick the most visible section
         const visible = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
         if (visible.length > 0) {
           const visibleId = visible[0].target.id;
-          // "home" means hero is in view — no nav link should be active
           setActiveSection(visibleId === "home" ? null : visibleId);
         }
       },
@@ -172,7 +165,6 @@ export default function Navigation() {
           </button>
         </div>
 
-        {/* Mobile menu dropdown */}
         <div
           className={`border-b border-border bg-white transition-all duration-400 ease-luxury ${
             isMobileMenuOpen

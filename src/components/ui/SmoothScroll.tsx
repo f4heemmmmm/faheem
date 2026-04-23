@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
 
-// Expose Lenis instance globally for components that need programmatic scrolling
 declare global {
   interface Window {
     __lenis?: Lenis;
@@ -13,21 +12,23 @@ declare global {
 export default function SmoothScroll() {
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.4,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      touchMultiplier: 2,
+      touchMultiplier: 1.5,
+      wheelMultiplier: 0.9,
+      smoothWheel: true,
+      autoResize: true,
     });
 
     window.__lenis = lenis;
 
+    let rafId: number;
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
+    rafId = requestAnimationFrame(raf);
 
-    requestAnimationFrame(raf);
-
-    // Handle anchor links
     const handleAnchorClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const anchor = target.closest('a[href^="#"]');
@@ -46,6 +47,7 @@ export default function SmoothScroll() {
     document.addEventListener("click", handleAnchorClick);
 
     return () => {
+      cancelAnimationFrame(rafId);
       lenis.destroy();
       delete window.__lenis;
       document.removeEventListener("click", handleAnchorClick);

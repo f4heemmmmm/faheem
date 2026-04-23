@@ -59,7 +59,6 @@ export default function Hero() {
           the tech industry.
         </p>
 
-        {/* CTA buttons */}
         <div
           className={`mt-10 flex items-center gap-4 transition-all duration-800 ease-luxury ${
             isVisible

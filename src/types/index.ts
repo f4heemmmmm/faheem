@@ -1,4 +1,3 @@
-// Navigation & Layout
 export interface NavLink {
   readonly name: string;
   readonly href: string;
@@ -9,7 +8,6 @@ export interface SocialLink {
   readonly url: string;
 }
 
-// Experience
 export type ExperienceCategory =
   | "header"
   | "internship"
@@ -25,7 +23,6 @@ export interface Experience {
   skills?: string[];
 }
 
-// Projects
 export interface Project {
   id: string;
   title: string;
@@ -42,8 +39,8 @@ export interface Project {
   highlights?: string[];
 }
 
-// Skills
 export interface SkillCategory {
   title: string;
+  subtitle: string;
   skills: string[];
 }
