@@ -131,17 +131,17 @@ export default function Navigation() {
           isVisible ? "translate-y-0" : "-translate-y-full"
         }`}
       >
-        <div className="flex h-14 items-center justify-between px-5">
+        <div className="flex h-10 items-center justify-between px-4">
           <Link
             href="/"
-            className="font-poppins text-body-sm font-bold uppercase tracking-normal text-foreground"
+            className="font-poppins text-xs font-bold uppercase tracking-normal text-foreground"
           >
             faheem
           </Link>
 
           <button
             type="button"
-            className="flex h-10 w-10 items-center justify-center text-foreground"
+            className="flex h-8 w-8 items-center justify-center text-foreground"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
           >
@@ -166,10 +166,10 @@ export default function Navigation() {
         </div>
 
         <div
-          className={`border-b border-border bg-white transition-all duration-400 ease-luxury ${
+          className={`overflow-hidden border-b border-border bg-white transition-all duration-400 ease-luxury ${
             isMobileMenuOpen
-              ? "visible translate-y-0 opacity-100"
-              : "invisible -translate-y-4 opacity-0"
+              ? "max-h-[400px] opacity-100"
+              : "max-h-0 border-b-0 opacity-0"
           }`}
         >
           <div className="px-5 py-6">
@@ -180,7 +180,7 @@ export default function Navigation() {
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className="block font-poppins text-body-sm uppercase tracking-normal transition-opacity duration-300 hover:opacity-50"
+                      className="block font-poppins text-sm font-medium uppercase tracking-normal transition-opacity duration-300 hover:opacity-50"
                       style={{ color: active ? ACTIVE_COLOR : undefined }}
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
@@ -192,7 +192,7 @@ export default function Navigation() {
               <li>
                 <a
                   href={`mailto:${CONTACT_EMAIL}`}
-                  className="block font-poppins text-body-sm uppercase tracking-normal text-foreground transition-opacity duration-300 hover:opacity-50"
+                  className="block font-poppins text-sm font-medium uppercase tracking-normal text-foreground-subtle transition-opacity duration-300 hover:opacity-50"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   contact
@@ -203,7 +203,7 @@ export default function Navigation() {
                   href="/images/my-resume.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-poppins text-body-sm lowercase tracking-normal text-accent underline underline-offset-4"
+                  className="font-poppins text-sm font-medium uppercase tracking-normal text-accent underline underline-offset-4"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   resume

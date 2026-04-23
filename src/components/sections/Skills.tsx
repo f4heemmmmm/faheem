@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { skillCategories } from "@/data/skills";
 import {
   SiJavascript,
@@ -59,7 +58,6 @@ const SKILLS: Record<string, { icon: IconType; color: string }> = {
 };
 
 function SkillChip({ skill }: { skill: string }) {
-  const [hovered, setHovered] = useState(false);
   const data = SKILLS[skill];
   if (!data) return null;
 
@@ -67,31 +65,15 @@ function SkillChip({ skill }: { skill: string }) {
 
   return (
     <div
-      className="group flex cursor-default items-center rounded-2xl border border-border bg-[#f8f8f8] py-3.5 pl-5 pr-5 transition-[background-color,border-color,padding] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-foreground/15 hover:bg-[#f3f3f3] hover:pr-6"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      className="group flex cursor-default items-center gap-3 rounded-2xl border border-border bg-[#f8f8f8] py-3.5 pl-5 pr-5 transition-[background-color,border-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-foreground/15 hover:bg-[#f3f3f3]"
+      style={{ ["--skill-color" as string]: data.color }}
     >
       <Icon
-        className="h-6 w-6 flex-shrink-0 transition-[color,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
-        style={{
-          color: hovered ? data.color : "#999999",
-          transform: hovered ? "scale(1.1)" : "scale(1)",
-        }}
+        className="h-6 w-6 flex-shrink-0 text-[#999999] transition-[color,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-110 group-hover:text-[color:var(--skill-color)]"
       />
-      <div
-        className="overflow-hidden"
-        style={{
-          maxWidth: hovered ? "220px" : "0px",
-          opacity: hovered ? 1 : 0,
-          marginLeft: hovered ? "12px" : "0px",
-          transform: hovered ? "translateX(0)" : "translateX(-8px)",
-          transition: "max-width 500ms cubic-bezier(0.16, 1, 0.3, 1), opacity 400ms cubic-bezier(0.16, 1, 0.3, 1), margin-left 500ms cubic-bezier(0.16, 1, 0.3, 1), transform 500ms cubic-bezier(0.16, 1, 0.3, 1)",
-        }}
-      >
-        <span className="whitespace-nowrap font-gt-america text-base font-semibold text-foreground">
-          {skill}
-        </span>
-      </div>
+      <span className="whitespace-nowrap font-gt-america text-base font-semibold text-[#999999] transition-colors duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:text-foreground">
+        {skill}
+      </span>
     </div>
   );
 }

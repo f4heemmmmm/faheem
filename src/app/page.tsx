@@ -4,7 +4,7 @@ import Skills from "@/components/sections/Skills";
 
 export default function Home() {
   return (
-    <div className="mx-[18px] bg-white sm:mx-[24px] md:ml-[92px] md:mr-[32px]">
+    <div className="bg-white md:ml-[92px] md:mr-[32px]">
       <main>
         <Hero />
         <About />

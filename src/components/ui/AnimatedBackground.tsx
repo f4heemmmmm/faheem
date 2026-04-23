@@ -140,18 +140,25 @@ export default function AnimatedBackground() {
     const timeLoc = gl.getUniformLocation(program, "time");
     const resolutionLoc = gl.getUniformLocation(program, "resolution");
 
-    let animationId: number;
+    let animationId: number | null = null;
 
     const resize = () => {
+      const container = containerRef.current;
+      if (!container) return;
+      const rect = container.getBoundingClientRect();
+      const w = Math.max(1, Math.round(rect.width));
+      const h = Math.max(1, Math.round(rect.height));
       const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
-      canvas.style.width = `${window.innerWidth}px`;
-      canvas.style.height = `${window.innerHeight}px`;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
       gl!.viewport(0, 0, canvas.width, canvas.height);
     };
 
     resize();
+    const ro = new ResizeObserver(resize);
+    if (containerRef.current) ro.observe(containerRef.current);
     window.addEventListener("resize", resize);
 
     const startTime = Date.now();
@@ -164,10 +171,32 @@ export default function AnimatedBackground() {
       animationId = requestAnimationFrame(render);
     };
 
-    render();
+    const start = () => {
+      if (animationId === null) render();
+    };
+
+    const stop = () => {
+      if (animationId !== null) {
+        cancelAnimationFrame(animationId);
+        animationId = null;
+      }
+    };
+
+    const container = containerRef.current;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) start();
+        else stop();
+      },
+      { threshold: 0 }
+    );
+    if (container) observer.observe(container);
+    else start();
 
     return () => {
-      cancelAnimationFrame(animationId);
+      stop();
+      observer.disconnect();
+      ro.disconnect();
       window.removeEventListener("resize", resize);
       gl!.deleteProgram(program);
       gl!.deleteShader(vs);

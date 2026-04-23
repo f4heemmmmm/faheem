@@ -17,7 +17,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative flex min-h-screen items-center overflow-hidden bg-white"
+      className="relative flex min-h-[100dvh] items-center overflow-hidden bg-white pt-10 md:pt-0"
     >
       <AnimatedBackground />
 
@@ -31,24 +31,24 @@ export default function Hero() {
           }`}
           style={{ transitionDelay: "700ms" }}
         >
-          <p className="text-lg font-medium text-slate-800">hi, i am</p>
+          <p className="text-base font-medium text-slate-800 sm:text-lg">hi, i am</p>
           <PressureText
             text="faheem"
-            className="font-sans text-display-2xl leading-none tracking-tight text-foreground sm:text-[5.5rem] md:text-[7rem] lg:text-[8rem]"
+            className="font-sans text-[clamp(3rem,14vw,8rem)] leading-none tracking-tight text-foreground"
             minWeight={100}
             maxWeight={900}
             radius={250}
           />
           <PressureText
             text="kamel"
-            className="font-sans text-display-2xl leading-none tracking-tight text-foreground sm:text-[5.5rem] md:text-[7rem] lg:text-[8rem]"
+            className="font-sans text-[clamp(3rem,14vw,8rem)] leading-none tracking-tight text-foreground"
             minWeight={100}
             maxWeight={900}
             radius={250}
           />
         </div>
         <p
-          className={`mt-8 font-bold max-w-md text-lg leading-relaxed text-slate-800 transition-all duration-800 ease-luxury ${
+          className={`mt-6 sm:mt-8 font-bold max-w-md text-base sm:text-lg leading-relaxed text-slate-800 transition-all duration-800 ease-luxury ${
             isVisible
               ? "translate-y-0 opacity-100"
               : "translate-y-[30%] opacity-0"
@@ -60,7 +60,7 @@ export default function Hero() {
         </p>
 
         <div
-          className={`mt-10 flex items-center gap-4 transition-all duration-800 ease-luxury ${
+          className={`mt-8 sm:mt-10 flex flex-wrap items-center gap-3 sm:gap-4 transition-all duration-800 ease-luxury ${
             isVisible
               ? "translate-y-0 opacity-100"
               : "translate-y-[30%] opacity-0"

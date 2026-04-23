@@ -8,12 +8,14 @@
   }
 
   body {
-    @apply bg-[#333333] text-foreground font-sans;
+    @apply text-foreground font-sans;
+    background-color: #333333;
     font-feature-settings: "cv11", "ss01", "ss03";
+    transition: background-color 0.3s ease;
   }
 
   body.loaded {
-    @apply bg-white;
+    background-color: #ffffff;
   }
 
   ::selection {
