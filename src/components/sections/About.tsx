@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Github, Linkedin, Mail } from "lucide-react";
+import { CONTACT_EMAIL, GITHUB_URL, LINKEDIN_URL } from "@/lib/constants";
 
 function useScrollReveal(threshold = 0.15) {
   const ref = useRef<HTMLDivElement>(null);
@@ -28,6 +29,14 @@ function useScrollReveal(threshold = 0.15) {
   return { ref, isVisible };
 }
 
+const HOBBIES = [
+  "floorball",
+  "movies",
+  "music",
+  "traveling",
+  "photography",
+] as const;
+
 function Bubble({
   children,
   className = "",
@@ -42,10 +51,10 @@ function Bubble({
   return (
     <div
       ref={ref}
-      className={`rounded-[24px] bg-[#f5f5f7] transition-all duration-700 ease-out ${
-        isVisible
-          ? "translate-y-0 opacity-100"
-          : "translate-y-6 opacity-0"
+      // Transitioning only opacity/transform: `transition-all` would also pick up
+      // the inherited `visibility` the loading screen toggles and delay the reveal.
+      className={`rounded-[24px] bg-[#f5f5f7] transition-[opacity,transform] duration-700 ease-out ${
+        isVisible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
       } ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
@@ -59,19 +68,22 @@ export default function About() {
     <section
       id="about"
       aria-labelledby="about-heading"
-      className="flex min-h-screen items-center bg-white"
+      className="flex min-h-screen items-center bg-white py-20 md:py-24"
     >
       <div className="container-luxury max-w-[1500px]">
         <div className="grid gap-5 lg:grid-cols-4">
           <Bubble className="flex flex-col justify-between p-8 md:p-10 lg:col-span-3" delay={0}>
             <div>
-              <p className="mb-4 font-gt-america text-sm font-semibold tracking-normal text-[#e87b35]">
+              <p className="mb-4 font-gt-america text-sm font-semibold tracking-normal text-brand-ink">
                 Who I Am
               </p>
 
-              <h3 className="mb-6 font-gt-america text-[2rem] font-bold leading-tight tracking-tight text-foreground md:text-[2.5rem]">
+              <h2
+                id="about-heading"
+                className="mb-6 font-gt-america text-[2rem] font-bold leading-tight tracking-tight text-foreground md:text-[2.5rem]"
+              >
                 I&apos;m Faheem Kamel
-              </h3>
+              </h2>
 
               <div className="space-y-5 font-gt-america text-[17px] leading-[1.75] text-slate-700">
                 <p>
@@ -114,29 +126,29 @@ export default function About() {
 
             <div className="mt-6 flex items-center gap-4">
               <a
-                href="https://github.com/f4heemmmmm"
+                href={GITHUB_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-white transition-opacity duration-300 hover:opacity-70"
-                aria-label="GitHub"
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-foreground text-white transition-opacity duration-300 hover:opacity-70"
+                aria-label="Faheem on GitHub (opens in a new tab)"
               >
-                <Github className="h-4 w-4" />
+                <Github className="h-4 w-4" aria-hidden="true" />
               </a>
               <a
-                href="https://linkedin.com/in/faheemkamel"
+                href={LINKEDIN_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-[#0077b5] text-white transition-opacity duration-300 hover:opacity-70"
-                aria-label="LinkedIn"
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-[#0077b5] text-white transition-opacity duration-300 hover:opacity-70"
+                aria-label="Faheem on LinkedIn (opens in a new tab)"
               >
-                <Linkedin className="h-4 w-4" />
+                <Linkedin className="h-4 w-4" aria-hidden="true" />
               </a>
               <a
-                href="mailto:f4heemmmm@gmail.com"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-[#e87b35] text-white transition-opacity duration-300 hover:opacity-70"
-                aria-label="Email"
+                href={`mailto:${CONTACT_EMAIL}`}
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-solid text-white transition-opacity duration-300 hover:opacity-70"
+                aria-label={`Email Faheem at ${CONTACT_EMAIL}`}
               >
-                <Mail className="h-4 w-4" />
+                <Mail className="h-4 w-4" aria-hidden="true" />
               </a>
             </div>
           </Bubble>
@@ -162,32 +174,24 @@ export default function About() {
               </div>
             </Bubble>
 
-            <Bubble className="p-6" delay={200}>
+            <Bubble className="flex flex-col p-6" delay={200}>
               <p className="font-gt-america text-sm font-semibold tracking-normal text-slate-600">
                 Hobbies
               </p>
-              <p className="mt-1.5 font-gt-america text-base leading-relaxed text-slate-700">
-                I enjoy <br /> playing floorball, <br /> watching movies, <br /> listening to music, <br /> traveling, <br /> and photography.
-                <br /> I capture moments through  my lens, a creative outlet that complements my technical work.
+              <ul className="mt-2 flex flex-wrap gap-1.5">
+                {HOBBIES.map((hobby) => (
+                  <li
+                    key={hobby}
+                    className="rounded-full bg-white px-3 py-1 font-gt-america text-sm text-slate-700"
+                  >
+                    {hobby}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-4 font-gt-america text-base leading-relaxed text-slate-700">
+                I capture moments through my lens — a creative outlet that
+                complements my technical work.
               </p>
-            </Bubble>
-
-            <Bubble className="flex flex-1 items-center p-6" delay={300}>
-              <a
-                href="/photographs"
-                className="group flex w-full items-center justify-between font-gt-america text-sm font-semibold text-foreground transition-opacity duration-300 hover:opacity-70"
-              >
-                View my photographs
-                <svg
-                  className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </a>
             </Bubble>
           </div>
         </div>

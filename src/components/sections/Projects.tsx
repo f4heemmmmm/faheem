@@ -2,8 +2,10 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import { projects } from "@/data/projects";
 
 const THEMES = [
@@ -24,6 +26,25 @@ const Projects3DScene = dynamic(() => import("@/components/ui/Projects3DScene"),
 
 function getTheme(index: number) {
   return THEMES[index % THEMES.length];
+}
+
+// The display face is extra-expanded, so a long single word such as
+// "threadroom" or "knightsbridge" runs straight across the 3D card at the
+// headline size. Cap the size per title so the longest word always fits the
+// text column instead of overlapping the artwork.
+const TITLE_COLUMN_PX = 440;
+const MAX_TITLE_PX = 120;
+const GLYPH_WIDTH_RATIO = 0.85; // widest measured glyph advance per 1px of font size
+
+function titleMaxFontSize(title: string) {
+  const longestWord = title
+    .split(/\s+/)
+    .reduce((longest, word) => (word.length > longest.length ? word : longest), "");
+  if (!longestWord) return MAX_TITLE_PX;
+  return Math.min(
+    MAX_TITLE_PX,
+    Math.floor(TITLE_COLUMN_PX / (longestWord.length * GLYPH_WIDTH_RATIO))
+  );
 }
 
 function clamp(value: number, min: number, max: number) {
@@ -76,8 +97,26 @@ const textVariants = {
   },
 };
 
+// The scroll-driven 3D layout only exists from `xl` up. Gating on the same
+// breakpoint keeps the three.js chunk off phones and tablets entirely rather
+// than downloading it to render into a `display: none` container.
+function useIsWideViewport() {
+  const [isWide, setIsWide] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 1280px)");
+    const update = () => setIsWide(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+
+  return isWide;
+}
+
 export default function Projects() {
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const isWide = useIsWideViewport();
   const [activeIndex, setActiveIndex] = useState(0);
   const floatingIndexRef = useRef(0);
   const bgRef = useRef<HTMLElement | null>(null);
@@ -221,7 +260,7 @@ export default function Projects() {
     >
       <div className="relative">
         <div
-          className="fixed inset-0 z-0 hidden md:left-[60px] lg:block"
+          className="fixed inset-0 z-0 hidden xl:block xl:left-[var(--nav-width)]"
           style={{
             transform: "translateZ(0)",
             visibility: inView ? "visible" : "hidden",
@@ -229,16 +268,18 @@ export default function Projects() {
             transition: "opacity 0.3s ease, visibility 0.3s ease",
           }}
         >
-          <Projects3DScene
-            items={sceneItems}
-            floatingIndexRef={floatingIndexRef}
-            onCardClick={scrollToProject}
-            paused={!inView}
-          />
+          {isWide && (
+            <Projects3DScene
+              items={sceneItems}
+              floatingIndexRef={floatingIndexRef}
+              onCardClick={scrollToProject}
+              paused={!inView}
+            />
+          )}
         </div>
 
         <div
-          className="pointer-events-none fixed inset-0 z-10 hidden md:left-[60px] lg:block"
+          className="pointer-events-none fixed inset-0 z-10 hidden xl:block xl:left-[var(--nav-width)]"
           style={{
             transform: "translateZ(0)",
             visibility: inView ? "visible" : "hidden",
@@ -257,58 +298,101 @@ export default function Projects() {
                   animate="center"
                   exit="exit"
                 >
-                  <h1
-                    className="font-extenda text-[clamp(4rem,8vw,7.5rem)] uppercase font-semibold leading-[0.86] tracking-[-0.02em]"
-                    style={{ color: activeTheme.accent }}
+                  <p className="mb-5 font-gt-america text-caption font-semibold uppercase tracking-normal text-black/60">
+                    Project {activeIndex + 1} of {projects.length}
+                  </p>
+
+                  <h2
+                    className="font-extenda uppercase font-semibold leading-[0.86] tracking-[-0.02em]"
+                    style={{
+                      color: activeTheme.accent,
+                      fontSize: `clamp(2.5rem, 6vw, ${titleMaxFontSize(
+                        activeProject.title
+                      )}px)`,
+                    }}
                   >
                     {activeProject.title}
-                  </h1>
+                  </h2>
 
-                  <p className="mt-10 max-w-[440px] font-gt-america text-body-xl leading-[1.7] text-black/82">
+                  <p className="mt-8 max-w-[440px] font-gt-america text-body-xl leading-[1.7] text-black/82">
                     {activeProject.description}
                   </p>
+
+                  <Link
+                    href={`/projects/${activeProject.id}`}
+                    className="pointer-events-auto mt-8 inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 font-poppins text-xs font-semibold uppercase tracking-normal text-white transition-opacity duration-300 hover:opacity-80"
+                  >
+                    View {activeProject.title}
+                    <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                  </Link>
                 </motion.div>
               </AnimatePresence>
             </div>
           </div>
         </div>
 
+        {/* One page heading for every layout: visible above the card list, and
+            kept for assistive tech on the wide 3D layout where the visible
+            headline is the project that is currently in view. */}
+        <div className="relative z-10 mx-auto max-w-[760px] px-5 pt-24 md:px-8 xl:sr-only">
+          <h1 className="font-extenda text-[clamp(2rem,7vw,3.5rem)] uppercase leading-[1.05] tracking-tight text-foreground">
+            Projects
+          </h1>
+          <p className="mt-3 font-gt-america text-body-md text-foreground-muted">
+            {projects.length} things I have designed and built. Select any one to
+            read the full write-up.
+          </p>
+        </div>
 
-        <div className="relative z-0 lg:hidden">
-          <div className="space-y-12 px-5 pb-16 pt-20">
-            {projects.map((project, index) => {
-              const theme = getTheme(index);
-              return (
-                <article
-                  key={project.id}
-                  className="rounded-[28px] p-4 shadow-[0_28px_60px_rgba(0,0,0,0.08)]"
-                  style={{ backgroundColor: theme.frame }}
-                >
-                  <div className="relative aspect-[1.12/1] overflow-hidden rounded-[22px]">
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      fill
-                      sizes="92vw"
-                      className="object-cover"
-                    />
-                  </div>
-                  <h2
-                    className="mt-6 font-extenda text-[clamp(2rem,8vw,3.25rem)] uppercase leading-[0.95] tracking-[-0.02em]"
-                    style={{ color: theme.accent }}
+        <div className="relative z-0 xl:hidden">
+          <div className="mx-auto max-w-[760px] px-5 pb-16 pt-10 md:px-8">
+            <div className="space-y-12">
+              {projects.map((project, index) => {
+                const theme = getTheme(index);
+                return (
+                  <article
+                    key={project.id}
+                    className="rounded-[28px] p-4 shadow-[0_28px_60px_rgba(0,0,0,0.08)]"
+                    style={{ backgroundColor: theme.frame }}
                   >
-                    {project.title}
-                  </h2>
-                  <p className="mt-4 font-gt-america text-[17px] leading-[1.75] text-black/76">
-                    {project.description}
-                  </p>
-                </article>
-              );
-            })}
+                    <Link
+                      href={`/projects/${project.id}`}
+                      className="group block rounded-[22px]"
+                    >
+                      <div className="relative aspect-[16/10] overflow-hidden rounded-[22px] bg-white/60">
+                        <Image
+                          src={project.image}
+                          alt={`${project.title} preview`}
+                          fill
+                          sizes="(min-width: 768px) 720px, 92vw"
+                          className="object-cover object-top transition-transform duration-500 ease-luxury group-hover:scale-[1.02]"
+                        />
+                      </div>
+                      <h2
+                        className="mt-6 font-extenda text-[clamp(1.75rem,7vw,3.25rem)] uppercase leading-[0.95] tracking-[-0.02em] [overflow-wrap:anywhere]"
+                        style={{ color: theme.accent }}
+                      >
+                        {project.title}
+                      </h2>
+                    </Link>
+                    <p className="mt-4 font-gt-america text-[17px] leading-[1.75] text-black/76">
+                      {project.description}
+                    </p>
+                    <Link
+                      href={`/projects/${project.id}`}
+                      className="mt-5 inline-flex items-center gap-2 font-poppins text-xs font-semibold uppercase tracking-normal text-foreground underline underline-offset-4 transition-opacity duration-300 hover:opacity-60"
+                    >
+                      View {project.title}
+                      <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                    </Link>
+                  </article>
+                );
+              })}
+            </div>
           </div>
         </div>
 
-        <div className="relative z-0 hidden lg:block" aria-hidden="true">
+        <div className="relative z-0 hidden xl:block" aria-hidden="true">
           {projects.map((project, index) => (
             <div
               key={project.id}

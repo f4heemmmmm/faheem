@@ -10,11 +10,8 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
-        display: ["var(--font-display)", "Georgia", "serif"],
-        mono: ["var(--font-mono)", "monospace"],
         poppins: ["var(--font-poppins)", "system-ui", "sans-serif"],
         extenda: ["var(--font-extenda)", "Arial", "sans-serif"],
-        apple: ["-apple-system", "BlinkMacSystemFont", "SF Pro Display", "SF Pro Text", "system-ui", "sans-serif"],
         "gt-america": ["var(--font-gt-america)", "Inter", "system-ui", "sans-serif"],
       },
       colors: {
@@ -23,15 +20,26 @@ const config: Config = {
           subtle: "#f8f8f8",
           elevated: "#f0f0f0",
         },
+        // `muted` and `subtle` are text tones on light backgrounds; both are kept
+        // above the 4.5:1 contrast ratio against #ffffff so body and caption text
+        // stays readable.
         foreground: {
           DEFAULT: "#181818",
-          muted: "rgba(24, 24, 24, 0.6)",
-          subtle: "rgba(24, 24, 24, 0.4)",
+          muted: "rgba(24, 24, 24, 0.75)",
+          subtle: "rgba(24, 24, 24, 0.62)",
         },
         accent: {
           DEFAULT: "#0099ff",
           muted: "#0077cc",
           subtle: "#004d80",
+        },
+        // The signature orange in three roles: the display tone, a fill dark
+        // enough to carry a white glyph (>=3:1), and a text tone that clears
+        // 4.5:1 on white.
+        brand: {
+          DEFAULT: "#e87b35",
+          solid: "#dd6f26",
+          ink: "#a8551a",
         },
         border: {
           DEFAULT: "rgba(24, 24, 24, 0.1)",
@@ -58,11 +66,6 @@ const config: Config = {
         "34": "8.5rem",
         "38": "9.5rem",
       },
-      maxWidth: {
-        "8xl": "88rem",
-        "content": "65ch",
-        "content-wide": "75ch",
-      },
       transitionDuration: {
         "400": "400ms",
         "600": "600ms",
@@ -71,20 +74,6 @@ const config: Config = {
       transitionTimingFunction: {
         "luxury": "cubic-bezier(0.16, 1, 0.3, 1)",
         "smooth": "cubic-bezier(0.45, 0, 0.55, 1)",
-      },
-      keyframes: {
-        "fade-up": {
-          "0%": { opacity: "0", transform: "translateY(30%)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        "fade-in": {
-          "0%": { opacity: "0" },
-          "100%": { opacity: "1" },
-        },
-      },
-      animation: {
-        "fade-up": "fade-up 0.8s cubic-bezier(0.86, 0, 0.2, 1.01) forwards",
-        "fade-in": "fade-in 0.6s ease forwards",
       },
     },
   },

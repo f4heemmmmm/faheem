@@ -3,6 +3,16 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* Width of the fixed desktop sidebar. Page shells offset themselves by this
+       value, so the nav width is defined in exactly one place. */
+    --nav-width: 60px;
+    /* Height of the fixed mobile top bar. */
+    --mobile-bar-height: 40px;
+    /* Gutter between the sidebar and framed page content. */
+    --page-gutter: 32px;
+  }
+
   html {
     @apply antialiased;
   }
@@ -22,12 +32,14 @@
     @apply bg-foreground/10 text-foreground;
   }
 
+  /* Two-tone ring so the focus indicator stays visible on both the light pages
+     and the dark experience / not-found pages. */
   :focus-visible {
-    @apply outline-none ring-2 ring-foreground/10 ring-offset-2 ring-offset-background;
+    @apply outline-none ring-2 ring-foreground ring-offset-2 ring-offset-white;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-medium tracking-tight;
+    @apply font-gt-america font-medium tracking-tight;
   }
 
   p {
@@ -44,24 +56,24 @@
     @apply mx-auto w-full max-w-[1200px] px-6 md:px-8 lg:px-12;
   }
 
-  .section-spacing {
-    @apply py-24 md:py-32 lg:py-40;
+  /* Framed pages: content sits to the right of the sidebar with a matching
+     gutter on the far side. */
+  .page-shell {
+    @apply md:ml-[calc(var(--nav-width)+var(--page-gutter))] md:mr-[var(--page-gutter)];
+  }
+
+  /* Full-bleed pages: content starts flush against the sidebar. */
+  .page-shell-flush {
+    @apply md:ml-[var(--nav-width)];
+  }
+
+  /* Clears the fixed mobile top bar. */
+  .mobile-bar-offset {
+    @apply pt-[var(--mobile-bar-height)] md:pt-0;
   }
 
   .section-label {
-    @apply font-mono text-caption uppercase tracking-normal text-foreground-subtle;
-  }
-
-  .link-underline {
-    @apply relative inline-block;
-  }
-
-  .link-underline::after {
-    @apply absolute bottom-0 left-0 h-px w-0 bg-foreground transition-all duration-400 ease-luxury content-[''];
-  }
-
-  .link-underline:hover::after {
-    @apply w-full;
+    @apply font-gt-america text-caption font-semibold uppercase tracking-normal text-foreground-subtle;
   }
 }
 
@@ -81,29 +93,19 @@
     background-size: 240px;
     background-repeat: repeat;
   }
-  .text-balance {
-    text-wrap: balance;
-  }
-
-  .animation-delay-100 { animation-delay: 100ms; }
-  .animation-delay-200 { animation-delay: 200ms; }
-  .animation-delay-300 { animation-delay: 300ms; }
-  .animation-delay-400 { animation-delay: 400ms; }
-  .animation-delay-500 { animation-delay: 500ms; }
-  .animation-delay-600 { animation-delay: 600ms; }
-
-  .conveyor-fade-up {
-    animation: conveyorFadeUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
 }
 
-@keyframes conveyorFadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .grain-overlay::before {
+    background-image: none;
   }
 }

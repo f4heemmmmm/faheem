@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef } from "react";
 
 interface PressureTextProps {
   text: string;
@@ -10,6 +10,14 @@ interface PressureTextProps {
   radius?: number;
 }
 
+/**
+ * Renders `text` letter by letter and thickens each letter as the pointer nears
+ * it. Rendered as a block-level <span> so it can sit inside a heading.
+ *
+ * Letter positions are cached and only re-measured on resize/scroll, and the
+ * animation loop idles when the pointer has not moved, so an idle page does no
+ * layout work.
+ */
 export default function PressureText({
   text,
   className = "",
@@ -17,57 +25,85 @@ export default function PressureText({
   maxWeight = 900,
   radius = 200,
 }: PressureTextProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
   const lettersRef = useRef<HTMLSpanElement[]>([]);
-  const mouseRef = useRef({ x: -1000, y: -1000 });
+  const centersRef = useRef<{ x: number; y: number }[]>([]);
+  const mouseRef = useRef({ x: -1e4, y: -1e4 });
+  const dirtyRef = useRef(true);
   const rafRef = useRef<number>(0);
 
-  const updateLetters = useCallback(() => {
-    const letters = lettersRef.current;
-    const mouse = mouseRef.current;
-
-    for (const letter of letters) {
-      if (!letter) continue;
-      const rect = letter.getBoundingClientRect();
-      const letterX = rect.left + rect.width / 2;
-      const letterY = rect.top + rect.height / 2;
-
-      const dx = mouse.x - letterX;
-      const dy = mouse.y - letterY;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-
-      const proximity = Math.max(0, 1 - distance / radius);
-      const eased = proximity * proximity;
-      const weight = Math.round(minWeight + eased * (maxWeight - minWeight));
-
-      letter.style.fontWeight = String(weight);
-    }
-
-    rafRef.current = requestAnimationFrame(updateLetters);
-  }, [minWeight, maxWeight, radius]);
-
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseRef.current = { x: e.clientX, y: e.clientY };
+    const letters = lettersRef.current;
+    if (letters.length === 0) return;
+
+    const reduceMotion = window.matchMedia?.(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (reduceMotion) return;
+
+    const measure = () => {
+      centersRef.current = letters.map((letter) => {
+        if (!letter) return { x: -1e4, y: -1e4 };
+        const rect = letter.getBoundingClientRect();
+        return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+      });
+      dirtyRef.current = true;
+    };
+
+    const handleMouseMove = (event: MouseEvent) => {
+      mouseRef.current = { x: event.clientX, y: event.clientY };
+      dirtyRef.current = true;
     };
 
     const handleMouseLeave = () => {
-      mouseRef.current = { x: -1000, y: -1000 };
+      mouseRef.current = { x: -1e4, y: -1e4 };
+      dirtyRef.current = true;
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    const frame = () => {
+      if (dirtyRef.current) {
+        dirtyRef.current = false;
+        const mouse = mouseRef.current;
+        const centers = centersRef.current;
+
+        for (let i = 0; i < letters.length; i++) {
+          const letter = letters[i];
+          const center = centers[i];
+          if (!letter || !center) continue;
+
+          const dx = mouse.x - center.x;
+          const dy = mouse.y - center.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          const proximity = Math.max(0, 1 - distance / radius);
+          const eased = proximity * proximity;
+
+          letter.style.fontWeight = String(
+            Math.round(minWeight + eased * (maxWeight - minWeight))
+          );
+        }
+      }
+
+      rafRef.current = requestAnimationFrame(frame);
+    };
+
+    measure();
+    rafRef.current = requestAnimationFrame(frame);
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
     document.addEventListener("mouseleave", handleMouseLeave);
-    rafRef.current = requestAnimationFrame(updateLetters);
+    window.addEventListener("resize", measure);
+    window.addEventListener("scroll", measure, { passive: true });
 
     return () => {
+      cancelAnimationFrame(rafRef.current);
       window.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseleave", handleMouseLeave);
-      cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("resize", measure);
+      window.removeEventListener("scroll", measure);
     };
-  }, [updateLetters]);
+  }, [minWeight, maxWeight, radius, text]);
 
   return (
-    <div ref={containerRef} className={className} aria-label={text}>
+    <span className={`block ${className}`}>
       {text.split("").map((char, i) => (
         <span
           key={`${char}-${i}`}
@@ -78,9 +114,9 @@ export default function PressureText({
           style={{ fontWeight: minWeight }}
           aria-hidden="true"
         >
-          {char === " " ? "\u00A0" : char}
+          {char === " " ? " " : char}
         </span>
       ))}
-    </div>
+    </span>
   );
 }

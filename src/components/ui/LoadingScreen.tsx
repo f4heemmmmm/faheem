@@ -3,7 +3,10 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const MIN_DURATION = 2800;
+// Long enough for the wave to read as a deliberate intro, short enough that it
+// never becomes the reason someone waits for the page. The screen also clears
+// as soon as the document is ready, so this is a floor and not a fixed wait.
+const MIN_DURATION = 1200;
 const WAVE_SEGMENTS = 60;
 const WAVE_SPEED = 3;
 const WAVE_FREQUENCY = 5;
@@ -33,6 +36,13 @@ function generateWaveClipPath(fillFraction: number, time: number): string {
   return `M${wavePoints.join(" L")} L1,1 L0,1 Z`;
 }
 
+function prefersReducedMotion() {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true
+  );
+}
+
 export default function LoadingScreen({
   children,
 }: {
@@ -57,11 +67,11 @@ export default function LoadingScreen({
     const t1 = setTimeout(() => {
       setPhase("reveal");
       document.body.classList.add("loaded");
-    }, 300);
+    }, 120);
 
     const t2 = setTimeout(() => {
       setPhase("done");
-    }, 900);
+    }, 480);
 
     timersRef.current.push(t1, t2);
   }, []);
@@ -77,7 +87,11 @@ export default function LoadingScreen({
     };
   }, [phase]);
 
+  // The wave only needs to run while the overlay is on screen; letting it keep
+  // requesting frames afterwards would burn a frame callback for the whole session.
   useEffect(() => {
+    if (phase === "done") return;
+
     let lastTime = 0;
 
     const animate = (now: number) => {
@@ -98,9 +112,18 @@ export default function LoadingScreen({
     return () => {
       if (waveRafRef.current) cancelAnimationFrame(waveRafRef.current);
     };
-  }, []);
+  }, [phase]);
 
   useEffect(() => {
+    // Someone who has asked for reduced motion gets the page straight away.
+    if (prefersReducedMotion()) {
+      document.body.classList.add("loaded");
+      setProgress(1);
+      progressRef.current = 1;
+      setPhase("done");
+      return;
+    }
+
     const onReady = () => {
       pageReadyRef.current = true;
       tryFinish();
@@ -132,10 +155,11 @@ export default function LoadingScreen({
 
     raf = requestAnimationFrame(tick);
 
+    const timers = timersRef.current;
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("load", onReady);
-      timersRef.current.forEach(clearTimeout);
+      timers.forEach(clearTimeout);
     };
   }, [tryFinish]);
 
@@ -146,6 +170,8 @@ export default function LoadingScreen({
           <motion.div
             className="fixed inset-0 z-[9999]"
             style={{ height: "100dvh" }}
+            role="status"
+            aria-label="Loading the site"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
@@ -179,7 +205,7 @@ export default function LoadingScreen({
                     clipPath: "url(#wave-clip)",
                     WebkitClipPath: "url(#wave-clip)",
                   }}
-                  aria-label="Loading FAHEEM"
+                  aria-hidden="true"
                 >
                   FAHEEM
                 </span>

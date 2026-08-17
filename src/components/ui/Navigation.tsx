@@ -3,15 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
-import { NAV_LINKS, CONTACT_EMAIL } from "@/lib/constants";
-
-const ACTIVE_COLOR = "#e87b35";
+import { NAV_LINKS, CONTACT_EMAIL, RESUME_URL } from "@/lib/constants";
 
 export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const lastScrollY = useRef(0);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
 
   function isLinkActive(href: string) {
@@ -40,6 +39,26 @@ export default function Navigation() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Escape closes the mobile menu and the page behind it stays put while it is open.
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsMobileMenuOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [isMobileMenuOpen]);
+
+  // Route changes should never leave the menu hanging open.
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     if (pathname !== "/") {
@@ -76,9 +95,13 @@ export default function Navigation() {
 
   return (
     <>
-      <nav className="fixed left-0 top-0 z-50 hidden h-screen w-[60px] flex-col items-center justify-between border-r border-border bg-white py-8 md:flex">
+      <nav
+        aria-label="Main"
+        className="fixed left-0 top-0 z-50 hidden h-screen w-[var(--nav-width)] flex-col items-center justify-between border-r border-border bg-white py-8 md:flex"
+      >
         <Link
           href="/"
+          aria-label="faheem kamel — home"
           className="font-poppins text-sm font-semibold uppercase tracking-normal text-foreground transition-opacity duration-300 hover:opacity-50"
           style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
         >
@@ -92,11 +115,13 @@ export default function Navigation() {
               <li key={link.name}>
                 <Link
                   href={link.href}
-                  className="font-poppins text-sm font-medium uppercase tracking-normal transition-all duration-300 hover:opacity-50"
+                  aria-current={active ? "page" : undefined}
+                  className={`font-poppins text-sm uppercase tracking-normal underline-offset-4 transition-opacity duration-300 hover:opacity-50 ${
+                    active ? "font-semibold text-brand-ink underline" : "font-medium"
+                  }`}
                   style={{
                     writingMode: "vertical-rl",
                     transform: "rotate(180deg)",
-                    color: active ? ACTIVE_COLOR : undefined,
                   }}
                 >
                   {link.name}
@@ -109,19 +134,20 @@ export default function Navigation() {
         <div className="flex flex-col items-center gap-6">
           <a
             href={`mailto:${CONTACT_EMAIL}`}
-            className="font-poppins text-sm uppercase tracking-normal text-foreground-subtle transition-opacity duration-300 hover:opacity-50"
+            className="font-poppins text-sm font-medium uppercase tracking-normal text-foreground transition-opacity duration-300 hover:opacity-50"
             style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
           >
             contact
           </a>
           <a
-            href="/images/my-resume.pdf"
+            href={RESUME_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-poppins text-sm uppercase tracking-normal text-accent transition-all hover:underline hover:underline-offset-4 duration-300 hover:opacity-70"
+            className="font-poppins text-sm font-medium uppercase tracking-normal text-accent-muted underline underline-offset-4 transition-opacity duration-300 hover:opacity-70"
             style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
           >
             resume
+            <span className="sr-only"> (opens a PDF in a new tab)</span>
           </a>
         </div>
       </nav>
@@ -131,19 +157,23 @@ export default function Navigation() {
           isVisible ? "translate-y-0" : "-translate-y-full"
         }`}
       >
-        <div className="flex h-10 items-center justify-between px-4">
+        <div className="flex h-[var(--mobile-bar-height)] items-center justify-between px-4">
           <Link
             href="/"
+            aria-label="faheem kamel — home"
             className="font-poppins text-xs font-bold uppercase tracking-normal text-foreground"
           >
             faheem
           </Link>
 
           <button
+            ref={menuButtonRef}
             type="button"
-            className="flex h-8 w-8 items-center justify-center text-foreground"
+            className="-mr-2 flex h-11 w-11 items-center justify-center text-foreground"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-menu"
           >
             <div className="relative h-4 w-6">
               <span
@@ -165,23 +195,28 @@ export default function Navigation() {
           </button>
         </div>
 
-        <div
-          className={`overflow-hidden border-b border-border bg-white transition-all duration-400 ease-luxury ${
+        <nav
+          id="mobile-menu"
+          aria-label="Main"
+          inert={!isMobileMenuOpen ? true : undefined}
+          className={`overflow-hidden border-b border-border bg-white transition-[max-height,opacity] duration-400 ease-luxury ${
             isMobileMenuOpen
-              ? "max-h-[400px] opacity-100"
+              ? "max-h-[70vh] overflow-y-auto opacity-100"
               : "max-h-0 border-b-0 opacity-0"
           }`}
         >
           <div className="px-5 py-6">
-            <ul className="space-y-5">
+            <ul className="space-y-1">
               {NAV_LINKS.map((link) => {
                 const active = isLinkActive(link.href);
                 return (
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className="block font-poppins text-sm font-medium uppercase tracking-normal transition-opacity duration-300 hover:opacity-50"
-                      style={{ color: active ? ACTIVE_COLOR : undefined }}
+                      aria-current={active ? "page" : undefined}
+                      className={`block py-2.5 font-poppins text-sm uppercase tracking-normal underline-offset-4 transition-opacity duration-300 hover:opacity-50 ${
+                        active ? "font-semibold text-brand-ink underline" : "font-medium"
+                      }`}
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {link.name}
@@ -192,26 +227,27 @@ export default function Navigation() {
               <li>
                 <a
                   href={`mailto:${CONTACT_EMAIL}`}
-                  className="block font-poppins text-sm font-medium uppercase tracking-normal text-foreground-subtle transition-opacity duration-300 hover:opacity-50"
+                  className="block py-2.5 font-poppins text-sm font-medium uppercase tracking-normal text-foreground transition-opacity duration-300 hover:opacity-50"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   contact
                 </a>
               </li>
-              <li className="pt-2">
+              <li>
                 <a
-                  href="/images/my-resume.pdf"
+                  href={RESUME_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-poppins text-sm font-medium uppercase tracking-normal text-accent underline underline-offset-4"
+                  className="block py-2.5 font-poppins text-sm font-medium uppercase tracking-normal text-accent-muted underline underline-offset-4"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   resume
+                  <span className="sr-only"> (opens a PDF in a new tab)</span>
                 </a>
               </li>
             </ul>
           </div>
-        </div>
+        </nav>
       </div>
     </>
   );

@@ -1,19 +1,33 @@
 "use client";
 
-import { Suspense, useRef, useMemo } from "react";
+import { Suspense, useMemo } from "react";
 import { Canvas, useLoader } from "@react-three/fiber";
-import { OrbitControls, Environment, Html } from "@react-three/drei";
+import { OrbitControls, Environment, Html, useProgress } from "@react-three/drei";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader.js";
 import * as THREE from "three";
 
+// The room model and its textures are a large download, so show real progress
+// rather than an indefinite spinner.
 function Loader() {
+  const { progress } = useProgress();
+  const percent = Math.min(100, Math.round(progress));
+
   return (
     <Html center>
-      <div className="flex flex-col items-center gap-3">
-        <div className="h-5 w-5 animate-spin rounded-full border-2 border-foreground/20 border-t-foreground" />
-        <p className="font-mono text-caption uppercase tracking-normal text-foreground-subtle">
-          loading model...
+      <div
+        className="flex w-56 flex-col items-center gap-3"
+        role="status"
+        aria-live="polite"
+      >
+        <div className="h-1 w-full overflow-hidden rounded-full bg-foreground/10">
+          <div
+            className="h-full origin-left bg-foreground transition-transform duration-300 ease-out"
+            style={{ transform: `scaleX(${percent / 100})` }}
+          />
+        </div>
+        <p className="whitespace-nowrap font-gt-america text-caption uppercase tracking-normal text-foreground-muted">
+          loading 3d model — {percent}%
         </p>
       </div>
     </Html>
@@ -50,6 +64,24 @@ function Model({ objUrl, mtlUrl }: { objUrl: string; mtlUrl?: string }) {
   return <primitive object={centered} />;
 }
 
+/**
+ * Sits outside the Canvas and only appears once loading has finished, so the
+ * page never advertises controls that do not respond yet. Subscribing here
+ * rather than in the parent keeps progress updates from re-rendering the scene.
+ */
+function ControlsHint() {
+  const active = useProgress((state) => state.active);
+  if (active) return null;
+
+  return (
+    <div className="pointer-events-none absolute bottom-4 left-1/2 w-[calc(100%-2rem)] -translate-x-1/2 px-2 text-center">
+      <p className="inline-block rounded-full bg-white/70 px-4 py-1.5 font-gt-america text-[10px] uppercase tracking-normal text-foreground-muted backdrop-blur-sm">
+        drag to rotate &middot; scroll to zoom &middot; right-click to pan
+      </p>
+    </div>
+  );
+}
+
 interface ModelViewerProps {
   modelUrl: string;
   mtlUrl?: string;
@@ -81,11 +113,7 @@ export default function ModelViewer({ modelUrl, mtlUrl, className = "" }: ModelV
         </Suspense>
       </Canvas>
 
-      <div className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2">
-        <p className="rounded-full bg-foreground/5 px-4 py-1.5 font-mono text-[10px] uppercase tracking-normal text-foreground-subtle backdrop-blur-sm">
-          drag to rotate &middot; scroll to zoom &middot; right-click to pan
-        </p>
-      </div>
+      <ControlsHint />
     </div>
   );
 }

@@ -141,6 +141,15 @@ export default function AnimatedBackground() {
     const resolutionLoc = gl.getUniformLocation(program, "resolution");
 
     let animationId: number | null = null;
+    const startTime = Date.now();
+    const reduceMotion =
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
+
+    const draw = (elapsed: number) => {
+      gl!.uniform1f(timeLoc, elapsed);
+      gl!.uniform2f(resolutionLoc, canvas.width, canvas.height);
+      gl!.drawArrays(gl!.TRIANGLE_STRIP, 0, 4);
+    };
 
     const resize = () => {
       const container = containerRef.current;
@@ -154,6 +163,9 @@ export default function AnimatedBackground() {
       canvas.style.width = `${w}px`;
       canvas.style.height = `${h}px`;
       gl!.viewport(0, 0, canvas.width, canvas.height);
+      // With no animation loop running there is nothing to repaint the
+      // resized buffer, so draw the still frame here.
+      if (reduceMotion) draw(0);
     };
 
     resize();
@@ -161,17 +173,17 @@ export default function AnimatedBackground() {
     if (containerRef.current) ro.observe(containerRef.current);
     window.addEventListener("resize", resize);
 
-    const startTime = Date.now();
-
     const render = () => {
-      const elapsed = (Date.now() - startTime) / 1000;
-      gl!.uniform1f(timeLoc, elapsed);
-      gl!.uniform2f(resolutionLoc, canvas.width, canvas.height);
-      gl!.drawArrays(gl!.TRIANGLE_STRIP, 0, 4);
+      draw((Date.now() - startTime) / 1000);
       animationId = requestAnimationFrame(render);
     };
 
     const start = () => {
+      // Reduced motion still gets the gradient, just held still.
+      if (reduceMotion) {
+        draw(0);
+        return;
+      }
       if (animationId === null) render();
     };
 

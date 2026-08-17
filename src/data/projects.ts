@@ -197,16 +197,17 @@ export const projects: Project[] = [
     description:
       "Fully responsive portfolio website built from scratch, featuring engaging sections for skills, experiences, and projects with interactive animations.",
     longDescription:
-      "A personal portfolio website designed and developed from scratch to showcase my skills, experiences, and projects. Built with modern web technologies and a focus on performance, the site features a dark, minimal aesthetic with smooth animations and intuitive navigation. The design emphasizes readability and user experience while maintaining a professional, high-end feel.",
-    technologies: ["react", "next.js", "tailwind css", "typescript"],
+      "A personal portfolio website designed and developed from scratch to showcase my skills, experiences, and projects. Built with modern web technologies and a focus on performance, the site pairs a light, minimal layout with a WebGL hero, a scroll-driven 3D project gallery, and smooth navigation. The design emphasizes readability and user experience while maintaining a professional, high-end feel.",
+    technologies: ["react", "next.js", "tailwind css", "typescript", "three.js"],
     image: "/images/website.png",
     liveUrl: "https://www.faheemkamel.com/",
     highlights: [
-      "Dark, minimal aesthetic with serif and sans-serif typography",
+      "Light, minimal aesthetic built on a small set of shared type and colour tokens",
+      "WebGL hero background and a scroll-driven 3D project gallery",
       "Smooth scroll navigation with section-based layout",
-      "Server-side rendering for optimal performance",
-      "Responsive design across all device sizes",
-      "Accessible markup following WCAG guidelines",
+      "Static rendering for fast first loads",
+      "Responsive from small phones through to large desktops",
+      "Keyboard-accessible navigation and WCAG-checked colour contrast",
     ],
   },
   {

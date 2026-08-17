@@ -57,24 +57,34 @@ const SKILLS: Record<string, { icon: IconType; color: string }> = {
   "Object-Oriented Programming": { icon: MdAccountTree, color: "#607d8b" },
 };
 
+// Resting tone for chips. #6b6b6b clears 4.5:1 on the #f8f8f8 chip background,
+// so the labels stay readable on touch devices where hover never fires.
+const CHIP_RESTING = "#6b6b6b";
+
 function SkillChip({ skill }: { skill: string }) {
   const data = SKILLS[skill];
-  if (!data) return null;
-
-  const Icon = data.icon;
+  const Icon = data?.icon;
 
   return (
-    <div
+    <li
       className="group flex cursor-default items-center gap-3 rounded-2xl border border-border bg-[#f8f8f8] py-3.5 pl-5 pr-5 transition-[background-color,border-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-foreground/15 hover:bg-[#f3f3f3]"
-      style={{ ["--skill-color" as string]: data.color }}
+      style={
+        {
+          "--skill-color": data?.color ?? CHIP_RESTING,
+          "--chip-resting": CHIP_RESTING,
+        } as React.CSSProperties
+      }
     >
-      <Icon
-        className="h-6 w-6 flex-shrink-0 text-[#999999] transition-[color,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-110 group-hover:text-[color:var(--skill-color)]"
-      />
-      <span className="whitespace-nowrap font-gt-america text-base font-semibold text-[#999999] transition-colors duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:text-foreground">
+      {Icon && (
+        <Icon
+          aria-hidden="true"
+          className="h-6 w-6 flex-shrink-0 text-[color:var(--chip-resting)] transition-[color,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-110 group-hover:text-[color:var(--skill-color)]"
+        />
+      )}
+      <span className="whitespace-nowrap font-gt-america text-base font-semibold text-[color:var(--chip-resting)] transition-colors duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:text-foreground">
         {skill}
       </span>
-    </div>
+    </li>
   );
 }
 
@@ -85,7 +95,7 @@ export default function Skills() {
       aria-labelledby="skills-heading"
       className="flex min-h-screen items-center bg-white"
     >
-      <div className="container-luxury w-full py-8">
+      <div className="container-luxury w-full py-20 md:py-24">
         <h2
           id="skills-heading"
           className="mb-12 font-extenda text-[clamp(1.8rem,5vw,4.5rem)] uppercase leading-[1.05] tracking-tight text-foreground"
@@ -96,20 +106,22 @@ export default function Skills() {
         <div className="space-y-10">
           {skillCategories.map((category) => (
             <div key={category.title}>
-              <div className="flex items-baseline justify-between">
+              <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                 <h3 className="font-gt-america text-lg font-semibold text-foreground">
                   {category.title}
                 </h3>
-
+                <p className="font-gt-america text-sm text-foreground-muted">
+                  {category.subtitle}
+                </p>
               </div>
 
               <div className="mt-3 h-px bg-border" />
 
-              <div className="mt-5 flex flex-wrap gap-3">
+              <ul className="mt-5 flex flex-wrap gap-3">
                 {category.skills.map((skill) => (
                   <SkillChip key={skill} skill={skill} />
                 ))}
-              </div>
+              </ul>
             </div>
           ))}
         </div>

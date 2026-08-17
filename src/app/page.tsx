@@ -4,8 +4,8 @@ import Skills from "@/components/sections/Skills";
 
 export default function Home() {
   return (
-    <div className="bg-white md:ml-[92px] md:mr-[32px]">
-      <main>
+    <div className="page-shell bg-white">
+      <main id="main-content">
         <Hero />
         <About />
         <Skills />

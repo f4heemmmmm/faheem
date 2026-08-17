@@ -8,8 +8,8 @@ export const metadata: Metadata = {
 
 export default function ExperiencePage() {
   return (
-    <div className="bg-[#2e2e2e] md:ml-[92px] md:mr-[32px]">
-      <main className="pt-10 md:pt-0">
+    <div className="page-shell bg-[#2e2e2e]">
+      <main id="main-content" className="mobile-bar-offset">
         <Experience />
       </main>
     </div>

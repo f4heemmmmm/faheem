@@ -3,13 +3,7 @@ export interface NavLink {
   readonly href: string;
 }
 
-export interface SocialLink {
-  readonly name: string;
-  readonly url: string;
-}
-
 export type ExperienceCategory =
-  | "header"
   | "internship"
   | "education"
   | "volunteer"
