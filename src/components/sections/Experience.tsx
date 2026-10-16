@@ -5,6 +5,7 @@ import { experiences } from "@/data/experiences";
 import type { Experience as ExperienceItem, ExperienceCategory } from "@/types";
 
 const SECTION_LABELS: Record<ExperienceCategory, string> = {
+  work: "employment",
   internship: "internship",
   education: "part time job",
   volunteer: "community service",
@@ -12,7 +13,6 @@ const SECTION_LABELS: Record<ExperienceCategory, string> = {
 };
 
 const DISPLAY_NAMES: Record<string, string> = {
-  "university of victoria": "meaningful",
   "friends2gather community service": "friends2gather",
 };
 

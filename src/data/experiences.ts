@@ -2,29 +2,44 @@ import type { Experience } from "@/types";
 
 export const experiences: Experience[] = [
   {
-    title: "university of victoria – full stack developer co-op",
+    title: "pca company services – project manager, previously software engineering & devops intern",
     description:
-      "Developed an AI meeting intelligence platform and email assistant for non-profit organisations, enabling automated transcription, smart communication, and workflow automation, while working with a community partner, Meaningful.",
+      "Leading delivery of Operis (ERP v2), which rebuilds PCA's ERP on a fork of Open Mercato, after building PCA's first multi-tenant SaaS ERP from scratch as its sole engineer for launch to client companies in Vietnam.",
+    date: "may 2026 – present",
+    category: "work",
+    skills: [
+      "run delivery for operis across one-week sprints and qa cycles, with several teams working from a shared repository tracked in github projects",
+      "own the integration scope: bringing the legacy erp modules onto the new platform and building a workflow to selectively pull upstream patches",
+      "as sole engineer, shipped a multi-tenant erp with 8 business modules, 352 rest endpoints and 99 data models, isolated across 12 postgresql schemas",
+      "led the move to zitadel oidc single sign-on with pkce, replacing json web tokens with revocable redis-backed sessions",
+      "engineered a dag workflow automation engine with distributed run leasing, a transactional outbox and four layers of idempotency",
+      "automated an 8-stage github actions pipeline running 2,862 tests, migration replay and container vulnerability scanning",
+    ],
+  },
+  {
+    title: "inspire – full stack developer",
+    description:
+      "Built Action Hub, an AI platform for non-profit organisations, through the University of Victoria's INSPIRE program in partnership with Meaningful.",
     date: "sep 2025 – dec 2025",
     category: "internship",
     skills: [
-      "built an ai meeting intelligence platform with automated notetakers, real-time transcription, ai summaries/action-items, and <100ms sse/websocket updates with 99.9% reliable sync across google meet, zoom and teams",
-      "architected an ai-based email assistant integrating transcripts, crm data and uploads for context-aware communication, supported by 8+ intelligent tools for search, thread analysis and contact lookups",
-      "developed an mcp server that auto-fetches context, injecting it into llm workflows, supporting multi-tenant use & aws-deployed scalability",
-      "designed a task and workflow system, with hierarchical projects, meeting-to-task conversion and automated customer.io notifications",
+      "built an ai meeting intelligence platform with automated notetakers, transcription, summaries and action items, with sub-100ms sse/websocket updates and 99.9% sync across google meet, zoom and teams",
+      "architected a context-aware ai email assistant grounded in meeting transcripts, crm records and uploads, powered by 8+ tools including semantic search, thread analysis and contact lookup",
+      "developed an mcp server and workflow system that auto-injects context into llm pipelines, supports multi-tenant usage, scales on aws and triggers customer.io notifications",
+      "worked directly with non-profit partners to identify the real user problem before writing code",
     ],
   },
   {
     title: "ensign infosecurity – full stack developer intern",
     description:
-      "Developed enterprise security applications and automated data processing pipelines, contributing to insider threat detection and incident response capabilities.",
-    date: "mar 2025 – aug 2025",
+      "Built an insider-threat detection and investigation platform for a security operations centre, covering alert ingestion, incident correlation and analyst workflow.",
+    date: "feb 2025 – aug 2025",
     category: "internship",
     skills: [
-      "architected insider threat web application (next.js/nest.js/postgresql), reducing incident investigation time by 40%",
-      "achieved 100% deployment consistency via docker containerization across development and production environments",
-      "developed secure role-based access control to ensure comprehensive data protection",
-      "automated processing pipeline for 1000+ data entries (csv/parquet format), with 99.9%+ accuracy, eliminating hours of weekly manual work",
+      "architected and shipped the platform end to end with next.js, nestjs and postgresql, mapping alerts to mitre att&ck and reducing investigation time by 40%",
+      "engineered an ingestion pipeline for 1,000+ csv and parquet records at 99%+ accuracy, removing around 15 hours of manual work each week",
+      "implemented role-based access control with case-level scoping, so analysts only open investigations assigned to them",
+      "built an analytics dashboard across 10+ dimensions and containerised the app with docker for consistent releases",
     ],
   },
   {
@@ -52,9 +67,9 @@ export const experiences: Experience[] = [
     ],
   },
   {
-    title: "singapore police force – national service",
+    title: "singapore police force – police officer",
     description:
-      "Served in border security and ground operations, demonstrating leadership through welfare initiatives and youth mentorship programs.",
+      "Checkpoint officer at Woodlands Checkpoint, then Ground Response Force officer at Woodlands West NPC, where the interest in security that led to my insider-threat work began.",
     date: "apr 2021 – aug 2023",
     category: "service",
     skills: [
